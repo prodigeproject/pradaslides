@@ -76,6 +76,8 @@ Choose size from delivery mode and copy shape, then tune it for product characte
 
 Do not solve overflow by shrinking below the delivery floor. Rewrite or change composition.
 
+For a 1600×900 speaking or hybrid deck, use roughly 20–26px for normal body copy and reserve 14–18px for furniture, captions, source lines, and other genuinely secondary information. These are working ranges, not a substitute for rendering. When a slide has generous unused space, first increase the central claim, supporting explanation, proof scale, or the spacing relationship; do not fill the void with a smaller type block plus decoration.
+
 Type color is part of the voice:
 
 - use warm ink for editorial/luxury;

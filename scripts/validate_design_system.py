@@ -15,12 +15,23 @@ HEX = re.compile(r"^#[0-9A-Fa-f]{6}$")
 TONE_KEYS = {"background", "surface", "text", "muted", "line"}
 
 
+def contrast_ratio(first: str, second: str) -> float:
+    """Return WCAG relative-luminance contrast for two validated #RRGGBB values."""
+    def luminance(value: str) -> float:
+        channels = [int(value[index:index + 2], 16) / 255 for index in (1, 3, 5)]
+        linear = [channel / 12.92 if channel <= 0.04045 else ((channel + 0.055) / 1.055) ** 2.4 for channel in channels]
+        return 0.2126 * linear[0] + 0.7152 * linear[1] + 0.0722 * linear[2]
+
+    light, dark = sorted((luminance(first), luminance(second)), reverse=True)
+    return (light + 0.05) / (dark + 0.05)
+
+
 def validate(value: Any) -> list[Diagnostic]:
     diagnostics: list[Diagnostic] = []
     if not isinstance(value, dict):
         return [Diagnostic("error", "DESIGN_ROOT", "Root must be a JSON object")]
-    if value.get("schema_version") != "1.1":
-        diagnostics.append(Diagnostic("error", "DESIGN_SCHEMA", "schema_version must be '1.1'", "schema_version"))
+    if value.get("schema_version") != "1.2":
+        diagnostics.append(Diagnostic("error", "DESIGN_SCHEMA", "schema_version must be '1.2'", "schema_version"))
     if not str(value.get("name", "")).strip():
         diagnostics.append(Diagnostic("error", "DESIGN_NAME", "name is required", "name"))
 
@@ -36,6 +47,70 @@ def validate(value: Any) -> list[Diagnostic]:
             diagnostics.append(Diagnostic("error", "DESIGN_CHARACTER", "character must contain 3–5 terms", "direction.character"))
         if not isinstance(direction.get("avoid"), list) or not direction.get("avoid"):
             diagnostics.append(Diagnostic("error", "DESIGN_AVOID", "direction.avoid must be a non-empty array", "direction.avoid"))
+
+    art_direction = value.get("art_direction")
+    if not isinstance(art_direction, dict):
+        diagnostics.append(Diagnostic("error", "DESIGN_ART_DIRECTION", "art_direction must be an object", "art_direction"))
+    else:
+        thesis = str(art_direction.get("visual_thesis", "")).strip()
+        if len(thesis.split()) < 8:
+            diagnostics.append(Diagnostic("error", "DESIGN_ART_THESIS", "art_direction.visual_thesis must explain the intended visual character", "art_direction.visual_thesis"))
+        scope = art_direction.get("reference_scope")
+        if not isinstance(scope, dict):
+            diagnostics.append(Diagnostic("error", "DESIGN_ART_REFERENCE", "art_direction.reference_scope must be an object", "art_direction.reference_scope"))
+        else:
+            for key in ("selected_cluster", "quality_floor", "anti_copy"):
+                if not str(scope.get(key, "")).strip():
+                    diagnostics.append(Diagnostic("error", "DESIGN_ART_REFERENCE_FIELD", f"reference_scope.{key} is required", f"art_direction.reference_scope.{key}"))
+        for group, keys in {
+            "material_language": ("background", "surface", "depth"),
+            "edge_language": ("primary", "secondary", "overlap_policy"),
+        }.items():
+            item = art_direction.get(group)
+            if not isinstance(item, dict):
+                diagnostics.append(Diagnostic("error", "DESIGN_ART_GROUP", f"art_direction.{group} must be an object", f"art_direction.{group}"))
+                continue
+            for key in keys:
+                if not str(item.get(key, "")).strip():
+                    diagnostics.append(Diagnostic("error", "DESIGN_ART_GROUP_FIELD", f"{group}.{key} is required", f"art_direction.{group}.{key}"))
+        image_system = art_direction.get("image_system")
+        if not isinstance(image_system, dict):
+            diagnostics.append(Diagnostic("error", "DESIGN_ART_IMAGE", "art_direction.image_system must be an object", "art_direction.image_system"))
+        else:
+            roles = image_system.get("roles")
+            treatments = image_system.get("treatments")
+            if not isinstance(roles, list) or not 3 <= len(roles) <= 8 or not all(str(item).strip() for item in roles):
+                diagnostics.append(Diagnostic("error", "DESIGN_ART_IMAGE_ROLES", "image_system.roles must contain 3–8 non-empty roles", "art_direction.image_system.roles"))
+            if not isinstance(treatments, list) or not 2 <= len(treatments) <= 8 or not all(str(item).strip() for item in treatments):
+                diagnostics.append(Diagnostic("error", "DESIGN_ART_IMAGE_TREATMENTS", "image_system.treatments must contain 2–8 non-empty treatments", "art_direction.image_system.treatments"))
+            for key in ("reuse_policy", "factual_visual_policy"):
+                if not str(image_system.get(key, "")).strip():
+                    diagnostics.append(Diagnostic("error", "DESIGN_ART_IMAGE_FIELD", f"image_system.{key} is required", f"art_direction.image_system.{key}"))
+        strategy = art_direction.get("native_raster_strategy")
+        if not isinstance(strategy, dict):
+            diagnostics.append(Diagnostic("error", "DESIGN_ART_NATIVE_RASTER", "art_direction.native_raster_strategy must be an object", "art_direction.native_raster_strategy"))
+        else:
+            for key in ("native", "raster", "prohibited"):
+                items = strategy.get(key)
+                if not isinstance(items, list) or not items or not all(str(item).strip() for item in items):
+                    diagnostics.append(Diagnostic("error", "DESIGN_ART_NATIVE_RASTER_FIELD", f"native_raster_strategy.{key} must be a non-empty array", f"art_direction.native_raster_strategy.{key}"))
+        families = art_direction.get("slide_families")
+        if not isinstance(families, list) or not 3 <= len(families) <= 8:
+            diagnostics.append(Diagnostic("error", "DESIGN_ART_FAMILIES", "art_direction.slide_families must contain 3–8 families", "art_direction.slide_families"))
+        elif isinstance(families, list):
+            family_ids: set[str] = set()
+            for index, family in enumerate(families):
+                location = f"art_direction.slide_families[{index}]"
+                if not isinstance(family, dict):
+                    diagnostics.append(Diagnostic("error", "DESIGN_ART_FAMILY", "slide family must be an object", location))
+                    continue
+                for key in ("id", "purpose", "macro_composition", "image_occupation", "tone"):
+                    if not str(family.get(key, "")).strip():
+                        diagnostics.append(Diagnostic("error", "DESIGN_ART_FAMILY_FIELD", f"slide family {key} is required", f"{location}.{key}"))
+                family_id = str(family.get("id", "")).strip()
+                if family_id and family_id in family_ids:
+                    diagnostics.append(Diagnostic("error", "DESIGN_ART_FAMILY_DUP", f"duplicate slide family id {family_id!r}", f"{location}.id"))
+                family_ids.add(family_id)
 
     canvas = value.get("canvas")
     if not isinstance(canvas, dict):
@@ -101,6 +176,14 @@ def validate(value: Any) -> list[Diagnostic]:
                 for key in TONE_KEYS:
                     if not HEX.match(str(palette.get(key, ""))):
                         diagnostics.append(Diagnostic("error", "DESIGN_TONE_HEX", f"{tone}.{key} must be #RRGGBB", f"color.tones.{tone}.{key}"))
+                if all(HEX.match(str(palette.get(key, ""))) for key in TONE_KEYS):
+                    for surface_key in ("background", "surface"):
+                        ratio = contrast_ratio(str(palette["text"]), str(palette[surface_key]))
+                        if ratio < 4.5:
+                            diagnostics.append(Diagnostic("error", "DESIGN_TEXT_CONTRAST", f"{tone}.text contrast against {surface_key} is {ratio:.2f}:1; require at least 4.5:1", f"color.tones.{tone}.{surface_key}"))
+                        muted_ratio = contrast_ratio(str(palette["muted"]), str(palette[surface_key]))
+                        if muted_ratio < 3.0:
+                            diagnostics.append(Diagnostic("error", "DESIGN_MUTED_CONTRAST", f"{tone}.muted contrast against {surface_key} is {muted_ratio:.2f}:1; require at least 3:1", f"color.tones.{tone}.{surface_key}"))
 
     furniture = value.get("furniture")
     if not isinstance(furniture, dict):

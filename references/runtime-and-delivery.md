@@ -36,6 +36,8 @@ The scan reports presence, not fitness. Confirm that the selected runtime suppor
 
 Use native PPTX when the user expects to edit, reuse, send to ordinary office users, apply masters, or preserve accessibility. Prefer native text, shapes, charts, and tables. Rasterize only visual effects that cannot be represented reliably.
 
+For high-art-direction or reference-matched work, reconstruct the reference grammar rather than flattening each page: native type, rules, masks/shapes where reliable, page furniture, charts, tables, callouts, and exact labels; local raster only for photos, texture, approved art, and non-reconstructable high-fidelity detail. Read `art-direction-and-pptx-reconstruction.md` before selecting this route.
+
 ### Existing PPTX
 
 Choose one mutation model:
@@ -120,6 +122,8 @@ Use the strongest available check:
 5. use browser screenshots for web slides.
 
 Renderer success is necessary but not sufficient. Inspect visual output and package structure.
+
+For editable reference-led PPTX, inspect both the montage and individual rendered slides for page silhouette, focal mass, type-role contrast, material/edge language, image crops, card discipline, slide-family rhythm, and native-versus-raster fidelity. A successful open or export does not prove visual parity.
 
 ## Delivery bundle
 

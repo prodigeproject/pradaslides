@@ -1,4 +1,4 @@
-# Reference-relative HTML benchmarking
+# Reference-relative benchmarking
 
 Use references as a quality floor and design constraint, not as a template library. A candidate passes when it reaches the transferable craft of the relevant reference cluster while retaining an original composition and an intent-fit story.
 
@@ -32,7 +32,7 @@ Exhaustive modes also activate browser-measured composition diversity in `run_ht
 
 ## Universal floor
 
-Score ten dimensions after rendering:
+Score twelve dimensions after rendering:
 
 1. **Identity:** recognizable by slide 1, coherent afterward.
 2. **Hierarchy:** one focal region and deliberate reading order.
@@ -44,10 +44,12 @@ Score ten dimensions after rendering:
 8. **Runtime:** fixed stage, thumbnails, navigation, notes, presentation mode, and honest export.
 9. **Accessibility:** contrast, readable type, keyboard behavior, captions, and fallbacks.
 10. **Originality:** principles transferred without cloning or generic card-wall fallback.
+11. **Materiality:** background, surface, depth, and edge language visibly support the declared visual thesis.
+12. **Native fidelity:** critical copy, exact labels, proof, and furniture remain editable when the delivery route promises editability; use `not-applicable` only for a deliberately non-editable route.
 
 Do not self-award a pass from source code. Every score needs render evidence, a rationale, and a reviewer. A final benchmark has no criterion below its floor, records the automated browser-QA report alongside the renders, and has no unresolved blocker.
 
-## HTML-only loop
+## HTML loop
 
 Use this loop when HTML is the selected benchmark runtime:
 
@@ -75,6 +77,21 @@ This runs browser QA, writes fresh slide renders, creates the montage and consol
 
 PNG files are QA evidence only. The HTML entrypoint remains the deliverable.
 
+## Native-PPTX loop
+
+Use this parallel loop when the selected artifact is an editable PPTX:
+
+1. write the art-direction contract and native/raster split before authoring;
+2. build all critical copy, data, annotations, rules, furniture, and shapes natively;
+3. render every PPTX page using the strongest available office route;
+4. inspect the slide montage for silhouette, material/edge consistency, type-role contrast, and slide-family rhythm;
+5. inspect each page at full size for crop, legibility, layer order, font substitution, source fit, and editability boundaries;
+6. inspect package structure with `scripts/inspect_pptx.py`;
+7. record scores and repairs in `qa-report.json` or a project benchmark record;
+8. repair the owned PPTX source, then re-render.
+
+The universal floor still applies. In addition, a native-PPTX candidate must pass **materiality** (background/surface/depth and edge grammar support the thesis) and **native fidelity** (critical meaning has not been rasterized). A full-slide generated image does not satisfy these criteria when editability was requested.
+
 ## Anti-gaming rules
 
 - Structural completeness cannot compensate for weak visible craft.
@@ -89,3 +106,4 @@ PNG files are QA evidence only. The HTML entrypoint remains the deliverable.
 - Repeated generic response prose cannot masquerade as individual treatment; exhaustive mapping responses must be specific and unique.
 - Coverage JSON cannot drift from the rendered deck; reference IDs must pass plan-to-DOM trace.
 - Reference similarity is not originality; copied topology should lower the score.
+- A palette match, one curved divider, or a polished cover cannot substitute for material language, image-role choreography, slide-family rhythm, and native editability across the deck.

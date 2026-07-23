@@ -137,14 +137,15 @@ For each phase, specify:
 
 Avoid artificial drama. A scientific briefing may emphasize orientation and proof; a portfolio may emphasize identity, selected work, process, outcomes, and fit.
 
-### 5. Establish the visual system and topology registry
+### 5. Establish the visual system, art direction, and topology registry
 
-Read [design-and-visuals.md](references/design-and-visuals.md) and [topology-and-layouts.md](references/topology-and-layouts.md). Edit `design-system.json` and use `layout-manifest.json` as the default portable topology registry.
+Read [design-and-visuals.md](references/design-and-visuals.md), [art-direction-and-pptx-reconstruction.md](references/art-direction-and-pptx-reconstruction.md), and [topology-and-layouts.md](references/topology-and-layouts.md). Edit `design-system.json` and use `layout-manifest.json` as the default portable topology registry.
 
 Define:
 
 - one intent-fit visual direction and a relevant supplied-reference quality floor;
 - canvas, grid, margins, type scale, palette roles, image treatment, and slide furniture;
+- a concrete `art_direction`: visual thesis, material language, edge language, image roles/treatments/reuse rules, native-versus-raster strategy, and three to eight slide families;
 - deck-level rhythm: topology variety, focal-mass changes, tone shifts, repetition anchors, and density;
 - reusable topology/layout entries with roles, relationships, slots, media capacity, tone support, guardrails, and target-runtime fidelity.
 
@@ -203,12 +204,19 @@ Hard visual rules:
 - Use one dominant visual idea per slide.
 - Meet the reference-quality floor: recognizable identity, decisive scale contrast, inspectable proof, meaningful topology variation, and coherent tone rhythm.
 - Treat a visual cluster as a prior, never a typography answer. Resolve the specific product's positioning, audience, personality, proof density, interaction model, language, and brand assets before choosing families, scale, weight, tracking, case, and type color. Two products in the same category should not inherit the same type system without a written rationale.
+- Treat material and edge language as first-class tokens. Define how background, surface, depth, frame, curve, overlap, rule, and shadow behave; do not approximate an art direction with only a palette and rounded cards.
+- Pair every text role with its actual rendered surface, not just the deck palette. Normal text needs at least 4.5:1 contrast; muted/support text needs at least 3:1. Do not place a dark-tone text token on a light surface (or the reverse) after a mask, override, or image treatment changes the surface.
+- A curve, mask, crop, or illustration must clarify hierarchy, reveal a focal subject, carry evidence, or establish a named brand/material motif. If it merely slices a photograph or occupies whitespace, delete it and use a grid, rule, or deliberate crop instead.
 - Treat an image slot as a media opportunity, never a fixed template. Resolve each asset's narrative job, focal subject, crop tolerance, text-safe region, scale, and relationship to copy before selecting full bleed, split crop, editorial window, contact sheet, diptych, detail crop, device stage, panorama, mask, or gallery choreography. Repeat a composition only when repetition is an intentional deck anchor.
+- Select frame geometry from the evidence: preserve a full garment in a vertical window, use an edge-to-edge macro plus an establishing view for craft detail, give process work a sequence or wide evidence field, and reserve an arch/circle/organic mask for a subject or brand reason. Do not apply one rounded portrait frame to every supplied photo.
+- Let presentable type consume the available composition. At a 1600×900 live slide, treat roughly 20–26px as normal body territory and reserve 14–18px for true furniture/captions. If a sparse layout leaves large unused space, enlarge the claim, body, image evidence, or spacing relationship before adding a decorative object.
+- Give each used image an explicit role such as hero, process, context, product, detail, evidence, texture, or cutout. Use a slide-family/rhythm map so page silhouettes vary while type, material, edge, and furniture grammar remain coherent.
 - Keep authoring and audit language off the audience-facing canvas. Reference IDs, transfer principles, avoid rules, asset credits, crop labels, topology names, benchmark scores, and QA markers belong in notes or metadata unless the audience genuinely needs them.
 - Treat photographs, diagrams, tables, and charts as evidence carriers.
 - Avoid generic business imagery, ornamental dashboards, arbitrary blobs, and repetitive card grids.
 - Do not let CSS gradients, empty device shells, avatar silhouettes, or abstract SVG objects impersonate photography, product evidence, or a finished hero. When a supplied reference derives its quality from real media, use relevant supplied or rights-compatible sourced media, or record a blocking media gap.
 - Do not ask an image model to render core slide copy, charts, or exact labels.
+- When editable PPTX is requested, rebuild the visual grammar with native text, rules, shapes, annotations, charts, tables, and page furniture. Rasterize only selected photos, texture, approved complex art, or non-reconstructable visual detail; never use a full generated slide as the default editable deck page.
 - Maintain projection-safe type. Default minimums: title `35 pt`, subhead `24 pt`, body `16 pt`; use larger text for live speaking decks.
 - Keep slide-edge safety margins and account for renderer differences.
 
@@ -219,6 +227,7 @@ Hard visual rules:
 - Separate slide copy from speaker notes and leave-behind detail.
 - Match density to delivery mode: `speaking`, `hybrid`, or `reading`.
 - Use native text, charts, tables, and shapes when editability matters.
+- Apply the declared native/raster strategy to every slide. A raster asset may support art direction, but it must not contain the only version of critical copy, chart values, source labels, or accessibility meaning.
 - Use generated or searched imagery only when it adds specific explanatory or emotional value.
 - Honor an explicit preference for sourced photography over generation. Search rights-compatible libraries, select by subject and crop fitness, download the chosen asset locally, record its source page and license, and never depend on a remote hotlink during delivery.
 - For usable generation capability, create only assets approved in `visual-generation-plan.json`, inspect every result, preserve prompt/provenance, and add the selected output to `asset-manifest.json`.
@@ -277,7 +286,7 @@ Read [qa.md](references/qa.md). Rendering is mandatory for created or edited dec
 5. Repair the authoring source, re-export, and re-render affected slides.
 6. Repeat until no blocking issue remains. Do not declare success from code inspection alone.
 
-For reference-led HTML tuning, also read [reference-benchmarking.md](references/reference-benchmarking.md). Populate `reference-benchmark.json` with the supplied references, transferable principles, anti-copy constraints, evidence-backed scores, and repair history. PNG renders are QA evidence; keep the HTML entrypoint as the deliverable.
+For reference-led work, also read [reference-benchmarking.md](references/reference-benchmarking.md). Populate `reference-benchmark.json` for HTML candidates and apply the same scorecard to PPTX renders: image staging, material/edge language, type-role contrast, slide-family rhythm, native fidelity, and anti-copy integrity. PNG renders are QA evidence; they are never the editable source.
 
 Before changing an existing benchmark candidate, read [iteration-versioning.md](references/iteration-versioning.md) and freeze the current candidate. Never overwrite the only inspectable evidence for an earlier tuning round. Label retrospective or different-input artifacts honestly; only same-prompt, same-content, same-capability runs qualify for direct V-to-V scoring.
 
@@ -324,6 +333,7 @@ Open with the outcome. Do not bury the deliverable path under process narration.
 | Select intent, arc, density, and closing action | [intent-playbooks.md](references/intent-playbooks.md) |
 | Research, evidence, claims, story, titles, notes | [content-and-narrative.md](references/content-and-narrative.md) |
 | Grids, typography, color, imagery, charts, diagrams | [design-and-visuals.md](references/design-and-visuals.md) |
+| Turn visual references into material, edge, image, rhythm, and native-PPTX reconstruction decisions | [art-direction-and-pptx-reconstruction.md](references/art-direction-and-pptx-reconstruction.md) |
 | Select product-specific typography, brand voice, scale, roles, and fallbacks | [typography-and-voice.md](references/typography-and-voice.md) |
 | Choreograph photos and product media by intent without falling into repeated slots | [media-composition.md](references/media-composition.md) |
 | Select topology, layout roles, safe slots, variation, and visual-quality floor | [topology-and-layouts.md](references/topology-and-layouts.md) |
@@ -345,11 +355,13 @@ Open with the outcome. Do not bury the deliverable path under process narration.
 - Titles communicate takeaways except for documented slide-role exceptions.
 - Facts are sourced or clearly labeled as assumptions/scenarios.
 - The visual system is coherent without making every page identical.
+- The design system includes a concrete visual thesis, material language, edge language, image system, slide-family rhythm map, and native/raster reconstruction strategy that fit this product and audience.
 - Typography expresses the specific product and audience rather than merely its broad category; family, scale, weight, tracking, case, color, and fallback choices have an explicit rationale.
 - Media placement expresses the slide job and product character; crops, masks, scale, sequencing, and image-to-copy relationships do not collapse into a repeated photo slot.
 - Audience-facing slides contain no internal reference, audit, source-credit, crop, topology, or generation labels unless explicitly required for the audience.
 - Every slide uses an explicit relationship, topology, registered/custom layout, safe slot budget, tone, and focal emphasis.
 - The deck meets its intent-relative supplied-reference quality floor and passes thumbnail/squint tests.
+- A reference-led PPTX is judged from rendered pages, not code alone: silhouette, focal mass, type-role contrast, material depth, image staging, card discipline, rhythm, native editability, and truth boundaries all pass review.
 - A reference-led HTML project has a final `reference-benchmark.json`; every universal criterion includes render evidence, meets its floor, and has no blocker. When exhaustive reference coverage was requested, every supplied reference also has a validated passing coverage mapping in the declared mode.
 - Every modified tuning candidate has an immutable predecessor snapshot, an iteration manifest, and an explicit comparability status.
 - Image/video generation availability produced a resolved `use`, `skip`, `unavailable`, or `delegated` decision; every generated asset has a unique job, provenance, and visual review.

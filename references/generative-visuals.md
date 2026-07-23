@@ -2,7 +2,7 @@
 
 ## Principle
 
-Capability awareness must change the work. When image or video generation is available, inspect the deck for a communication job that supplied media, native shapes, charts, or typography cannot perform as effectively. Record the decision in `visual-generation-plan.json`.
+Capability awareness must change the work. When image or video generation is available, inspect the deck for a communication job that supplied media, native shapes, charts, or typography cannot perform as effectively. Use the declared material language, edge language, image system, and slide family to make this decision; then record it in `visual-generation-plan.json`.
 
 Do not generate imagery merely to prove the capability exists. Do not ignore the capability when a custom visual would materially raise distinctiveness, explanation, emotional entry, or audience recall.
 
@@ -65,18 +65,21 @@ Generate candidates only for plausible placements. Review before requesting addi
 
 ## Prompt from the layout
 
-Lock the slide's topology, crop, and text-safe zone before prompting. Include:
+Lock the slide's topology, slide family, crop, and text-safe zone before prompting. Include:
 
 - intended slide and communication job;
 - use case: natural photo, product mockup, stylized concept, explanatory illustration, and so on;
 - subject and scene;
 - visual character and material language;
+- intended edge relationship and how the asset meets native text/shapes;
 - wide/portrait/square aspect and focal placement;
 - text-safe negative space required by the layout;
 - palette relationship to the design system;
 - exact invariants and forbidden content;
 - no rendered text, logo, watermark, chart, or UI unless the operation explicitly requires and can validate it;
 - desired difference from other deck visuals.
+
+The prompt must identify whether the asset is illustrative atmosphere, concept, texture, or could be mistaken for factual proof. Never use generation to repair a missing factual work sample when the deck claims to show actual work.
 
 Example handoff packet:
 

@@ -31,7 +31,9 @@
     {"id":"rhythm","score":0,"floor":8.5,"status":"fail","rationale":"Pending render review.","evidence":["pending"]},
     {"id":"runtime","score":0,"floor":8.5,"status":"fail","rationale":"Pending runtime review.","evidence":["pending"]},
     {"id":"accessibility","score":0,"floor":8.0,"status":"fail","rationale":"Pending render review.","evidence":["pending"]},
-    {"id":"originality","score":0,"floor":8.5,"status":"fail","rationale":"Pending anti-copy review.","evidence":["pending"]}
+    {"id":"originality","score":0,"floor":8.5,"status":"fail","rationale":"Pending anti-copy review.","evidence":["pending"]},
+    {"id":"materiality","score":0,"floor":8.3,"status":"fail","rationale":"Pending review of background, surface, depth, and edge language.","evidence":["pending"]},
+    {"id":"native-fidelity","score":0,"floor":8.5,"status":"fail","rationale":"Pending review of editable critical text, proof, and page furniture.","evidence":["pending"]}
   ],
   "render_evidence": {
     "entrypoint": "presenter/index.html",

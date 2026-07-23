@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Validate reference-relative HTML benchmark evidence and quality floors."""
+"""Validate reference-relative benchmark evidence and quality floors."""
 
 from __future__ import annotations
 
@@ -22,10 +22,12 @@ REQUIRED_CRITERIA = {
     "runtime",
     "accessibility",
     "originality",
+    "materiality",
+    "native-fidelity",
 }
 VALID_STATUS = {"draft", "final"}
 CRITERION_STATUS = {"pass", "fail", "not-applicable"}
-TARGET_RUNTIMES = {"html", "web-slides", "slidev"}
+TARGET_RUNTIMES = {"html", "web-slides", "slidev", "native-pptx"}
 COVERAGE_MODES = {"cluster-sampled", "mapped-all-references", "one-slide-per-reference"}
 
 
@@ -92,7 +94,7 @@ def validate(data: Any, require_final: bool, root: Path | None = None) -> list[D
                         diagnostics.append(Diagnostic("error", "REFBENCH_REFERENCE_FIELD", f"{key} is required", f"{loc}.{key}"))
                 reference_path = item.get("path")
                 if root and nonempty(reference_path) and "://" not in reference_path and not (root / reference_path).resolve().is_file():
-                    diagnostics.append(Diagnostic("error", "REFBENCH_REFERENCE_PATH", f"Reference file does not exist: {reference_path}", f"{loc}.path"))
+                    diagnostics.append(Diagnostic(missing_evidence_severity, "REFBENCH_REFERENCE_PATH", f"Reference file does not exist: {reference_path}", f"{loc}.path"))
                 if item.get("usage") not in {"selected", "quality-floor", "not-applicable"}:
                     diagnostics.append(Diagnostic("error", "REFBENCH_REFERENCE_USE", "usage must be selected, quality-floor, or not-applicable", f"{loc}.usage"))
 
@@ -200,11 +202,22 @@ def validate(data: Any, require_final: bool, root: Path | None = None) -> list[D
     if not isinstance(render, dict):
         diagnostics.append(Diagnostic("error", "REFBENCH_RENDER", "render_evidence must be an object", "render_evidence"))
     else:
-        for key in ("entrypoint", "slide_montage", "console_capture", "browser_qa", "viewport"):
+        native_pptx = data.get("target_runtime") == "native-pptx"
+        required_render_fields = (
+            ("pptx_file", "slide_montage", "package_inspection", "viewport")
+            if native_pptx
+            else ("entrypoint", "slide_montage", "console_capture", "browser_qa", "viewport")
+        )
+        file_render_fields = (
+            ("pptx_file", "slide_montage", "package_inspection")
+            if native_pptx
+            else ("entrypoint", "slide_montage", "console_capture", "browser_qa")
+        )
+        for key in required_render_fields:
             if not nonempty(render.get(key)):
                 diagnostics.append(Diagnostic("error", "REFBENCH_RENDER_FIELD", f"render_evidence.{key} is required", f"render_evidence.{key}"))
         if root:
-            for key in ("entrypoint", "slide_montage", "console_capture", "browser_qa"):
+            for key in file_render_fields:
                 value = render.get(key)
                 if nonempty(value) and "://" not in value and not (root / value).resolve().is_file():
                     diagnostics.append(Diagnostic(missing_evidence_severity, "REFBENCH_RENDER_PATH", f"Render evidence does not exist: {value}", f"render_evidence.{key}"))

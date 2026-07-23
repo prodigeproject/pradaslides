@@ -74,6 +74,21 @@ Use when a screen, pattern, document, garment, packaging, or physical object mus
 
 Use when the mask reinforces the brand or subject: a curve for soft tailoring, an angled crop for technical precision, an arch for architecture, or a circle for a portrait focal point. The mask must not remove evidence or become decorative noise.
 
+### Frame selection by evidence
+
+Choose the frame from what must remain legible, then vary it across the deck:
+
+| Asset/job | Prefer | Avoid |
+|---|---|---|
+| Full garment / silhouette | Tall editorial window, full-bleed look, or contained vertical proof | Cropping hem, sleeve, or proportion merely to fit a recurring arch |
+| Maker portrait / identity | One decisive portrait window or full bleed with a clear text zone | Repeating the same portrait shell on every biography-like slide |
+| Hands, patterns, cutting | Wide evidence field, process strip, or sequence with the work surface visible | Narrow portrait crop that hides the action and tool relationship |
+| Macro craft detail | Edge-to-edge detail plus an establishing inset when context matters | Decorative curve that obscures the detail it is meant to prove |
+| Collection breadth | Contact sheet with one selected dominant look | Uniform gallery where every photo has identical weight |
+| Event / team proof | Straight contained photograph with a factual caption | Treating contextual evidence as atmospheric decoration |
+
+An arch, angled cut, circle, or organic mask is a scarce emphasis device. Use it when it makes the subject more legible; otherwise choose a clean edge. Do not reuse the same frame silhouette more than twice in a short deck unless it is an explicit series.
+
 ### Layered collage
 
 Use when the story is genuinely cumulative: moodboard, process wall, materials, creator identity, or a multi-source case. Establish hierarchy through scale, overlap, rotation, and depth. Do not build an arbitrary scrapbook.

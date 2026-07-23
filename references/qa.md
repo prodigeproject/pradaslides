@@ -42,15 +42,24 @@ Deck-level montage review:
 - section changes are legible;
 - no accidental outlier in color, margins, title location, or density;
 - cover and closing feel related to the body.
+- material language, edge language, and furniture behave as one system rather than isolated decorative choices;
+- planned slide families show intentional variation in macro composition, image occupation, density, and tone;
+- a reference-led deck has not drifted into a generic palette/card approximation of its selected quality floor.
 
 Slide-level full-size review:
 
 - title hierarchy and reading order are immediate;
+- headline and body scale use available whitespace deliberately; sparse slides do not leave presentation-critical copy at caption size while adding decorative geometry;
 - one dominant visual idea;
 - alignment and proximity expose the structure;
 - whitespace is intentional;
 - text is readable at target display size;
+- normal text holds at least 4.5:1 contrast against its actual surface; muted/support text holds at least 3:1; verify this after backgrounds, masks, local panels, and image scrims are applied;
 - images are sharp, correctly cropped, and not distorted;
+- each image visibly performs its declared hero, process, product, context, detail, evidence, texture, or cutout role;
+- background texture, masks, curves, overlaps, and shadows preserve contrast and do not compete with facts or copy;
+- every decorative curve, crop, or illustration has an explicit compositional or semantic job; remove elements that merely slice a relevant photo or leave an unexplained fragment;
+- frame choices follow the asset role and vary across the deck; portrait, process, full-garment, detail, collection, and evidence photos are not forced into one recurring shell;
 - attached-media placement follows the reviewed focal point, safe region, crop tolerance, rights, and sensitivity constraints;
 - browser QA reports no broken/missing-alt/distorted images and no video missing controls, poster/fallback, or accessible labeling;
 - charts/tables communicate the stated claim;
@@ -71,6 +80,8 @@ For PPTX:
 - embedded/linked video uses a compatible codec, poster frame, caption/transcript when required, and a tested static fallback;
 - no empty placeholders or duplicated hidden slides;
 - editability matches the promised route;
+- essential copy, exact labels, charts, tables, annotations, page furniture, and source lines are native objects when the deck promises editability;
+- raster assets are limited to the declared photos, texture, approved art, or complex visual detail; the page is not a flattened slide image;
 - package does not depend on missing local paths or remote assets.
 
 Use `scripts/inspect_pptx.py` for a structural preflight, then open/render with an office application when available.
@@ -110,14 +121,15 @@ For PDF:
 2. Render all pages at final aspect ratio.
 3. Create a labeled montage and review deck rhythm.
 4. Inspect each page at full resolution.
-5. Record issues with slide ID, severity, category, observation, and repair.
-6. Repair the owned authoring source.
+5. For reference-led work, compare silhouette, focal mass, type-role contrast, material/edge language, image staging, card discipline, slide-family rhythm, native fidelity, and anti-copy integrity against the declared quality floor.
+6. Record issues with slide ID, severity, category, observation, and repair.
+7. Repair the owned authoring source.
 
 For exhaustive reference-led HTML fixtures, inspect `composition_diversity` in the browser-QA report. It must show meaningful variation in topology, registered layout, tone, density, and combined signatures without long runs of the same macro-composition. Also confirm that every slide's `referenceIds` matches the benchmark coverage mapping; `HTML_REFERENCE_TRACE` indicates a missing, extra, or swapped rendered response. Treat these as anti-regression gates; still inspect whether the variation supports the slide's communication job.
 
 For presenter-console QA, require the transformed 16:9 stage bounding box to remain entirely inside `.stage-viewport`. `HTML_CONSOLE_STAGE_FIT` means the canvas is clipped, distorted, or drifting underneath the rail/inspector despite valid slide-internal geometry.
-7. Re-export and re-render every affected slide; rerender all slides if global tokens changed.
-8. Repeat until all blocking and major issues are closed.
+8. Re-export and re-render every affected slide; rerender all slides if global tokens changed.
+9. Repeat until all blocking and major issues are closed.
 
 Do not accept an issue merely because it is inherited from a template when it makes the delivered deck unusable. Escalate invariant conflicts instead of silently breaking them.
 

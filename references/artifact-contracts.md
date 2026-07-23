@@ -72,6 +72,7 @@ Allowed `delivery.mode`: `speaking`, `hybrid`, `reading`.
 `design-system.json` owns the visual direction and quality floor independently of any one renderer. Required groups:
 
 - `direction`: communication mode, visual cluster, 3–5 behavioral character terms, reference principles, and avoid list;
+- `art_direction`: visual thesis, selected reference scope and anti-copy rule, material language, edge language, image roles/treatments/reuse policy, native-versus-raster strategy, and 3–8 slide families;
 - `canvas`: fixed dimensions, safe margin, columns, gutter, and baseline;
 - `typography`: display/body/mono families, fallback policy, type scale, line budgets, and a product-specific `selection` rationale based on archetype, positioning, audience, personality, proof density, and interaction model;
 - `color`: semantic colors and light/dark/accent tone palettes;
@@ -321,7 +322,7 @@ Allowed `decision`: `pending`, `use`, `skip`, `unavailable`, `delegated`. `pendi
 
 ## `reference-benchmark.json`
 
-This artifact owns the reference-relative quality verdict for a rendered candidate. It records the target HTML runtime, the selected or floor-only role of every supplied reference, the transferable principle and anti-copy constraint, ten universal craft criteria, render evidence, blockers, and repair history.
+This artifact owns the reference-relative quality verdict for a rendered candidate. It records the target runtime, the selected or floor-only role of every supplied reference, the transferable principle and anti-copy constraint, twelve universal craft criteria, render evidence, blockers, and repair history.
 
 Scores are invalid without a rationale and evidence path. `status: final` requires all universal criteria at or above their declared floors, every applicable criterion marked `pass`, a slide montage and console capture, and an empty blocker list. Use `not-applicable` only for reference-specific style relevance; it cannot exempt a universal criterion.
 
@@ -373,7 +374,7 @@ python scripts/validate_reference_benchmark.py <project-dir>/reference-benchmark
 | `brief.json` | user intent, constraints, assumptions, invariants | slide copy or layout |
 | `source-ledger.json` | provenance and claim class | narrative order or geometry |
 | `asset-manifest.json` | media identity, technical facts, semantic role, rights, and placement constraints | slide argument or final geometry |
-| `design-system.json` | visual direction, tokens, rhythm, furniture, and quality floor | slide-specific claim or final coordinates |
+| `design-system.json` | visual direction, art-direction tokens, image system, rhythm, furniture, native/raster policy, and quality floor | slide-specific claim or final coordinates |
 | `layout-manifest.json` | relational topologies, reusable layouts, slots, limits, and fidelity | which layout a specific slide must use |
 | `visual-generation-plan.json` | generation decision, operations, prompts, uniqueness, provenance, and review | factual proof or final slide placement |
 | `deck-plan.json` | audience journey, slide jobs, claims, topology/layout choice, visual intent | final geometry |

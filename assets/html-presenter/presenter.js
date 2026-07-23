@@ -95,8 +95,10 @@
     dom.slideCount.textContent = String(slides.length);
     dom.scaler.style.width = `${stageWidth}px`;
     dom.scaler.style.height = `${stageHeight}px`;
+    dom.scaler.style.transform = 'translate(-50%, -50%) scale(.05)';
     document.documentElement.style.setProperty('--stage-w', `${stageWidth}px`);
     document.documentElement.style.setProperty('--stage-h', `${stageHeight}px`);
+    scaleStage();
     buildFurnitureControls();
     buildPrintDeck();
     bindEvents();
@@ -184,6 +186,12 @@
       renderNotes();
     });
     window.addEventListener('resize', scaleStage);
+    // Console rails can resize independently of the browser window. Observe the
+    // actual stage region so the 16:9 canvas never retains a stale scale.
+    if (typeof ResizeObserver === 'function') {
+      const viewportObserver = new ResizeObserver(() => requestAnimationFrame(scaleStage));
+      viewportObserver.observe(dom.viewport);
+    }
     window.addEventListener('keydown', handleKeydown);
     document.addEventListener('fullscreenchange', () => {
       if (!document.fullscreenElement && document.body.classList.contains('present-mode')) exitPresentation();
@@ -221,6 +229,7 @@
     renderActiveSlide();
     renderThumbnails();
     renderInspector();
+    requestAnimationFrame(scaleStage);
     renderNotes();
     renderDraftStatus();
   }
@@ -469,6 +478,7 @@
     renderThumbnails();
     renderInspector();
     renderNotes();
+    requestAnimationFrame(scaleStage);
   }
 
   async function enterPresentation() {

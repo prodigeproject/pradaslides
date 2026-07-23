@@ -287,6 +287,8 @@ def valid_reference_benchmark() -> dict:
         "runtime": 8.5,
         "accessibility": 8.0,
         "originality": 8.5,
+        "materiality": 8.3,
+        "native-fidelity": 8.5,
     }
     for criterion_id, floor in floors.items():
         criteria.append(
@@ -352,10 +354,21 @@ def main() -> int:
     typography_selection = design_system.get("typography", {}).get("selection")
     if not isinstance(typography_selection, dict) or not typography_selection.get("rationale"):
         failures.append("starter design system omitted product-specific typography selection")
+    art_direction = design_system.get("art_direction")
+    if not isinstance(art_direction, dict) or not art_direction.get("visual_thesis"):
+        failures.append("starter design system omitted executable art direction")
+    invalid_art_direction = copy.deepcopy(design_system)
+    invalid_art_direction["art_direction"].pop("native_raster_strategy")
+    if not errors(validate_design_system(invalid_art_direction)):
+        failures.append("design system accepted a missing native/raster strategy")
     invalid_typography = copy.deepcopy(design_system)
     invalid_typography["typography"]["selection"]["rationale"] = "Modern clean"
     if not errors(validate_design_system(invalid_typography)):
         failures.append("design system accepted a non-specific typography rationale")
+    invalid_contrast = copy.deepcopy(design_system)
+    invalid_contrast["color"]["tones"]["light"]["text"] = invalid_contrast["color"]["tones"]["light"]["background"]
+    if not errors(validate_design_system(invalid_contrast)):
+        failures.append("design system accepted unreadable text/background colors")
     if errors(validate_layout_manifest(layout_manifest)):
         failures.append("starter layout manifest was rejected")
     if validate_profile(starter_profile):
@@ -380,9 +393,9 @@ def main() -> int:
     presenter_runtime = Path(__file__).resolve().parents[1] / "assets" / "html-presenter"
     presenter_css = (presenter_runtime / "presenter.css").read_text(encoding="utf-8")
     presenter_js = (presenter_runtime / "presenter.js").read_text(encoding="utf-8")
-    if not all(token in presenter_css for token in (".stage-scaler", "position: absolute", "left: 50%", "top: 50%")):
+    if not all(token in presenter_css for token in (".stage-scaler", "position: absolute", "left: 50%", "top: 50%", "translate(-50%, -50%) scale(.05)")):
         failures.append("HTML stage scaler is not explicitly center-positioned")
-    if "translate(-50%, -50%) scale(${scale})" not in presenter_js:
+    if not all(token in presenter_js for token in ("translate(-50%, -50%) scale(${scale})", "ResizeObserver", "viewportObserver.observe(dom.viewport)")):
         failures.append("HTML stage scaler transform can drift beneath console panels")
     for viewport_width, viewport_height in ((1026, 686), (744, 580), (1336, 724), (1600, 900)):
         scale = min(viewport_width / 1600, viewport_height / 900)
@@ -447,6 +460,18 @@ def main() -> int:
     reference_benchmark = valid_reference_benchmark()
     if errors(validate_reference_benchmark(reference_benchmark, True)):
         failures.append("valid final reference benchmark was rejected")
+    native_pptx_benchmark = valid_reference_benchmark()
+    native_pptx_benchmark["candidate"] = "Native PPTX smoke fixture"
+    native_pptx_benchmark["target_runtime"] = "native-pptx"
+    native_pptx_benchmark["render_evidence"] = {
+        "pptx_file": "deck/final.pptx",
+        "slide_count": 3,
+        "slide_montage": "renders/slide-montage.png",
+        "package_inspection": "qa/pptx-package.json",
+        "viewport": "16:9 render at 1920x1080",
+    }
+    if errors(validate_reference_benchmark(native_pptx_benchmark, True)):
+        failures.append("valid native-PPTX reference benchmark was rejected")
     missing_evidence_root = Path("__pradaslides_missing_evidence__")
     draft_evidence_benchmark = valid_reference_benchmark()
     draft_evidence_benchmark["status"] = "draft"
