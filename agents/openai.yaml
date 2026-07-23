@@ -1,0 +1,4 @@
+interface:
+  display_name: "PradaSlides"
+  short_description: "High-end slide strategy and production"
+  default_prompt: "Use $pradaslides to turn my goal and source material into a polished, audience-ready presentation."
