@@ -32,11 +32,18 @@ The scan reports presence, not fitness. Confirm that the selected runtime suppor
 
 ## Routing rules
 
-### Native PPTX default
+### Editable PPTX plus render-parity preview by default
 
 Use native PPTX when the user expects to edit, reuse, send to ordinary office users, apply masters, or preserve accessibility. Prefer native text, shapes, charts, and tables. Rasterize only visual effects that cannot be represented reliably.
 
 For high-art-direction or reference-matched work, reconstruct the reference grammar rather than flattening each page: native type, rules, masks/shapes where reliable, page furniture, charts, tables, callouts, and exact labels; local raster only for photos, texture, approved art, and non-reconstructable high-fidelity detail. Read `art-direction-and-pptx-reconstruction.md` before selecting this route.
+
+When the user asks for a presentation without naming a format, deliver:
+
+1. an editable PPTX as the primary artifact and source of truth;
+2. a dependency-free HTML presenter preview built from the final PPTX slide renders.
+
+The preview uses the same final pixels seen in PPTX render QA, so it cannot drift into a second design. It provides thumbnails, navigation, speaker notes, and fullscreen presentation framing. It is intentionally not an editable HTML recreation.
 
 ### Existing PPTX
 
@@ -50,9 +57,11 @@ Do not mix these models silently. Copy the source to a new output and preserve t
 
 ### Fixed-stage HTML
 
-Use a fixed canvas such as `1600×900`, `1920×1080`, or `1280×720`; scale the stage for viewing instead of reflowing slide elements responsively. Read `html-presenter-console.md` and use `scripts/scaffold_presenter.py` when the output should feel like a presentation product rather than a bare page. Test thumbnails, keyboard navigation, focus, notes, chrome-free presenter mode, panel resizing, PDF export, and font loading. Use semantic HTML where practical.
+Use native fixed-stage HTML only when the user explicitly needs interactive, web-native, or HTML-editable slides. Use a fixed canvas such as `1600×900`, `1920×1080`, or `1280×720`; scale the stage for viewing instead of reflowing slide elements responsively. Read `html-presenter-console.md` and use `scripts/scaffold_presenter.py`. Test thumbnails, keyboard navigation, focus, notes, chrome-free presenter mode, panel resizing, PDF export, and font loading. Use semantic HTML where practical.
 
 Treat console controls as safe display overrides. They may change tone, transition, density within budget, and slide furniture. They must not silently rewrite claims, evidence, topology, chart data, or media crops. Keep all media paths relative so `file://` and static-server routes work.
+
+For the default PPTX companion, use `scripts/build_pptx_preview.py` instead. That route hides layout-mutating controls and displays ordered slide renders inside the same console shell.
 
 ### Slidev
 
@@ -141,4 +150,4 @@ project/
   exports/
 ```
 
-Keep temporary files outside `exports/`. Deliver only requested formats plus the supporting QA/source artifacts that make the deck maintainable.
+Keep temporary files outside `exports/`. Supporting QA/source artifacts remain in the project but are not part of the normal user-facing handoff. By default, present only the final `.pptx` and the presenter `index.html`.

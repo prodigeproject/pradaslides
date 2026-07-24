@@ -34,6 +34,8 @@ For every used asset, record:
 
 Do not infer semantic placement from dimensions or file names alone.
 
+For source-deck redesigns, also record `source_visual_job` and `reconstruction_disposition`: `retain`, `sanitize`, `reconstruct`, `replace-equivalently`, or `omit-with-rationale`. A source visual with procedural, evidentiary, or recognition value cannot silently disappear because a cleaner layout is available.
+
 ## 3. Choose a composition family
 
 Select the smallest family that makes the relationship clear.
@@ -69,6 +71,8 @@ Use for timeline, environment, process horizon, or a sequence that benefits from
 ### Device or artifact stage
 
 Use when a screen, pattern, document, garment, packaging, or physical object must be inspected. Present it as evidence with enough scale and boundary; do not use an empty device shell or fake UI as a substitute for the artifact.
+
+When a supplied source compares several screens or device states, a repeated-device contact sheet is often the correct topology. Do not replace it with bars, abstract columns, or generic cards unless those forms preserve the same comparison meaning.
 
 ### Organic or geometric mask
 

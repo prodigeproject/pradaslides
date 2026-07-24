@@ -2,9 +2,14 @@
 
 ## Purpose
 
-Use the bundled console when the chosen route includes fixed-stage HTML, a live browser presentation, or an interactive review surface. It makes the output behave like a presentation product while keeping the slide canvas separate from editing chrome.
+Use the bundled console for either a live browser deck or the default PPTX render-parity preview. It makes the output behave like a presentation product while keeping the slide canvas separate from editing chrome.
 
-The console is not a substitute for slide design. It wraps authored slides with navigation, thumbnails, safe controls, presenter mode, notes, and honest export actions.
+The console is not a substitute for slide design. It wraps either authored HTML slides or final PPTX render images with navigation, thumbnails, presenter mode, notes, and honest export actions.
+
+## Choose one preview mode
+
+- `render-parity` is the default companion to a PPTX. The PPTX remains editable; the HTML displays final slide renders and must be rebuilt after any PPTX repair.
+- `native-html` is for explicitly web-native, interactive, or HTML-editable slide content. It has a separate authoring source and requires cross-runtime comparison when PPTX is also delivered.
 
 ## Project files
 
@@ -26,6 +31,14 @@ presenter/
 ```
 
 Open `index.html` directly or serve the directory with any static server. No package installation or remote CDN is required.
+
+For a PPTX render-parity preview, first render the final PPTX, then run:
+
+```bash
+python scripts/build_pptx_preview.py --output <project-dir>/presenter --slides-dir <project-dir>/renders/slides --deck-plan <project-dir>/deck-plan.json --title "<deck title>" --force
+```
+
+This copies ordered slide images into `presenter/slides/`, creates final `deck.js`, and uses the same dependency-free console. The preview hides tone, density, and furniture controls because those properties belong to the PPTX source.
 
 ## Architecture
 
@@ -109,7 +122,7 @@ Keep export claims conservative:
 - **PPTX** is a separate production route. Do not claim that browser HTML is natively editable PowerPoint.
 - **PNG** requires a verified renderer or screenshot tool; do not expose a non-functional button.
 
-When PPTX is also required, use the same `brief.json`, `source-ledger.json`, `deck-plan.json`, `design-system.json`, and `layout-manifest.json` to build both outputs. Compare their renders, but let each runtime use native primitives.
+When native HTML and PPTX are both required, use the same `brief.json`, `source-ledger.json`, `deck-plan.json`, `design-system.json`, and `layout-manifest.json` to build both outputs. Compare their renders, but let each runtime use native primitives. For the default render-parity preview, the final PPTX render is already the visible slide source; verify ordering, image loading, notes, and console behavior instead of re-authoring the design.
 
 ## Visual system and furniture
 

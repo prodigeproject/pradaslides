@@ -91,6 +91,7 @@
   function initialize() {
     document.title = `${deck.meta?.title || 'PradaSlides'} — Presenter`;
     if (capturePresentation) document.body.classList.add('present-mode');
+    if (deck.meta?.previewMode === 'render-parity') document.body.classList.add('render-preview-mode');
     dom.deckTitle.textContent = deck.meta?.title || 'PradaSlides';
     dom.slideCount.textContent = String(slides.length);
     dom.scaler.style.width = `${stageWidth}px`;

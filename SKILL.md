@@ -1,6 +1,6 @@
 ---
 name: pradaslides
-description: Create, redesign, critique, or plan audience-ready presentations and PowerPoint decks from a short prompt or source material. Use for portfolios, work/result reviews, proposals, sales decks, investor pitches, strategy or decision decks, research and technical talks, lessons, keynotes, reports, product launches, and reusable presentation templates. Infers user intent, audience, desired change, narrative, evidence needs, visual direction, delivery mode, and the best available slide runtime; produces editable PPTX, web slides, PDF, or a production-ready deck plan with rigorous content, visual, accessibility, and render QA.
+description: Create, redesign, critique, or plan audience-ready presentations and PowerPoint decks from a short prompt or source material. Use for portfolios, work/result reviews, proposals, sales decks, investor pitches, strategy or decision decks, research and technical talks, lessons, keynotes, reports, product launches, and reusable presentation templates. Infers user intent, audience, desired change, narrative, evidence needs, visual direction, delivery mode, and the best available slide runtime. By default, produces an editable PPTX as the primary artifact plus a presentation-console HTML preview rendered from the final PPTX, with rigorous content, visual, accessibility, and render QA.
 ---
 
 # PradaSlides
@@ -83,9 +83,12 @@ Then choose a production runtime using [runtime-and-delivery.md](references/runt
 
 1. the host's native presentation tool when it can create and render the required artifact;
 2. native editable PPTX generation for ordinary business delivery;
-3. fixed-stage HTML or Slidev for interactive, code-heavy, or web-native talks;
-4. PDF only when editability is unnecessary;
-5. raster-first PPTX only when the user explicitly accepts limited editability and accessibility.
+3. a render-parity HTML presenter preview built from the final PPTX renders;
+4. native fixed-stage HTML or Slidev only for explicitly interactive, code-heavy, web-native, or HTML-editable talks;
+5. PDF only when editability is unnecessary;
+6. raster-first PPTX only when the user explicitly accepts limited editability and accessibility.
+
+Unless the user explicitly requests another bundle, set `delivery.output_formats` to `["pptx", "html-preview"]`. The PPTX is the editable source of truth. The HTML is a review and presentation companion, not a second editable layout source.
 
 If an existing deck must preserve wording, order, or appearance, treat those as invariants and record them in `brief.json`.
 
@@ -213,6 +216,8 @@ Hard visual rules:
 - Give each used image an explicit role such as hero, process, context, product, detail, evidence, texture, or cutout. Use a slide-family/rhythm map so page silhouettes vary while type, material, edge, and furniture grammar remain coherent.
 - Keep authoring and audit language off the audience-facing canvas. Reference IDs, transfer principles, avoid rules, asset credits, crop labels, topology names, benchmark scores, and QA markers belong in notes or metadata unless the audience genuinely needs them.
 - Treat photographs, diagrams, tables, and charts as evidence carriers.
+- Preserve visual semantics during redesign. Inventory every source screenshot, product example, device state, chart, process diagram, and annotated artifact; resolve each as retain, sanitize, reconstruct, replace-equivalently, or omit-with-rationale. Do not convert visual evidence into prose by default.
+- For instructional slides, show a concrete artifact or mechanism before explaining it. A clean card grid is not equivalent to a legible screen, product proof, chart, device state, or directional process.
 - Avoid generic business imagery, ornamental dashboards, arbitrary blobs, and repetitive card grids.
 - Do not let CSS gradients, empty device shells, avatar silhouettes, or abstract SVG objects impersonate photography, product evidence, or a finished hero. When a supplied reference derives its quality from real media, use relevant supplied or rights-compatible sourced media, or record a blocking media gap.
 - Do not ask an image model to render core slide copy, charts, or exact labels.
@@ -251,7 +256,7 @@ When generating PPTX:
 - avoid hidden dependencies on remote services;
 - make output deterministic enough to repair individual slides.
 
-When generating web slides:
+When generating native web slides:
 
 - use a fixed stage, not responsive page flow, for slide composition;
 - read [html-presenter-console.md](references/html-presenter-console.md) and scaffold the dependency-free console when a presentation-product experience is useful;
@@ -266,6 +271,14 @@ python scripts/scaffold_presenter.py --output <project-dir>/presenter --deck-pla
 ```
 
 The scaffold is an authoring start, not a deliverable. Replace each slide's body, clear every `authoring.incomplete` flag, and run visual QA.
+
+When PPTX is the primary artifact, do not duplicate the slide layout in HTML. Render the final PPTX to ordered slide images, then build the presentation-console preview:
+
+```bash
+python scripts/build_pptx_preview.py --output <project-dir>/presenter --slides-dir <project-dir>/renders/slides --deck-plan <project-dir>/deck-plan.json --title "<deck title>" --force
+```
+
+This `render-parity` preview must use the final post-repair PPTX renders. Rebuild it after every PPTX change. Use native HTML authoring only when the user explicitly needs web-native interaction, editable HTML slide content, or runtime-specific behavior.
 
 When Chromium and Node.js are available, run the portable browser check:
 
@@ -316,15 +329,12 @@ Record results in `qa-report.json`. A maximum repair count is a scheduling aid, 
 
 ### 10. Deliver clearly
 
-Deliver the requested presentation plus the useful supporting artifacts:
+The default user-facing handoff contains only:
 
-- final editable source and/or PPTX;
-- PDF or preview montage when useful;
-- `qa-report.json`;
-- `source-ledger.json` for sourced decks;
-- a short note listing assumptions, editability limitations, unresolved evidence gaps, and fonts or external assets required.
+- the final editable `.pptx`;
+- the companion presenter `index.html`.
 
-Open with the outcome. Do not bury the deliverable path under process narration.
+Keep QA reports, ledgers, manifests, render folders, source files, and benchmark evidence internal unless the user asks for them or a material limitation requires disclosure. Open with the two deliverables and avoid process narration. Add at most one short limitation sentence when necessary.
 
 ## Reference router
 
@@ -371,3 +381,4 @@ Open with the outcome. Do not bury the deliverable path under process narration.
 - Every slide was rendered and visually inspected.
 - Capability-dependent work was performed only by verified or explicitly delegated capabilities; fallbacks and external review gates are disclosed.
 - The final artifact opens, contains no placeholders, and matches the requested format.
+- The default delivery includes an editable PPTX and a render-parity HTML presenter preview built from that final PPTX; only explicitly requested supporting artifacts are listed to the user.

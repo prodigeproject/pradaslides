@@ -1,6 +1,13 @@
 # PradaSlides
 
-PradaSlides is an agent skill for creating audience-ready presentations from a short prompt or source material. It turns a request into a clear communication brief, evidence-aware narrative, product-specific visual direction, editable slide plan, and a verified delivery route for PPTX, HTML slides, PDF, or planning-only work.
+PradaSlides is an agent skill for creating audience-ready presentations from a short prompt or source material. It turns a request into a clear communication brief, evidence-aware narrative, product-specific visual direction, editable slide plan, and a verified delivery route.
+
+Its default delivery is deliberately simple:
+
+- an editable `.pptx` as the source of truth; and
+- a presentation-console `.html` preview rendered from that final PPTX.
+
+Native HTML slides, PDF, or planning-only output remain opt-in routes when the user explicitly needs them.
 
 ## Public HTML benchmark
 

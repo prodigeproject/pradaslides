@@ -76,6 +76,12 @@ For user-supplied photos, video, logos, screenshots, charts, and illustrations, 
 - Never use generic handshake, meeting, rocket, target, or lightbulb imagery as a substitute for thinking.
 - Do not generate an image containing core copy, exact metrics, tables, or chart labels.
 
+### Visual evidence retention
+
+When redesigning source material, preserve the communication job of every visual carrier. A screenshot may establish procedure, a product image may make a category concrete, a device may identify a channel, and a chart may prove a behavior. Keeping the words while removing those carriers is content loss.
+
+Use this order: supplied factual artifact → sanitized/annotated artifact → rights-cleared equivalent → faithful native reconstruction → simplified diagram → prose-only fallback. Document why a lower-evidence form is necessary.
+
 ## Chart selection by question
 
 | Audience question | Preferred form |
@@ -161,6 +167,7 @@ The supplied reference set clusters into reusable directions. Treat these as pri
 | Bold creator | Creative portfolio | oversized condensed type, black + vivid accent, collage | density and inconsistent hierarchy |
 | Minimal case-study | Portfolio, async case | strong whitespace, modular proof, precise captions | looking empty without a claim |
 | Warm personal brand | Creator/social portfolio | portrait-led identity, burgundy/red, approachable structure | repetitive biography cards |
+| Visual teaching studio | Workshops, creator education, product training | concrete devices/artifacts, color-coded steps, annotation, friendly texture | busy collage, tiny screenshots, or prose replacing proof |
 | Product UI system | Product/UX | device frames, interface details, system components | tiny screenshots and UI-wall effect |
 | Sustainability editorial | ESG, innovation, proposal | natural imagery, acid accent, clean data | decorative “green” claims |
 | Sculptural luxury | Fashion/product launch | art-directed still life, serif display, large whitespace | low information density |

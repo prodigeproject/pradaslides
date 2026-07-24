@@ -22,7 +22,8 @@
     "aspect_ratio": "16:9",
     "language": "en",
     "output_formats": [
-      "pptx"
+      "pptx",
+      "html-preview"
     ],
     "editability": "native-preferred"
   },

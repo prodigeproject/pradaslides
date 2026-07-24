@@ -136,12 +136,17 @@ def resolve(profile: dict[str, Any], brief: dict[str, Any] | None = None) -> dic
         formats = brief.get("delivery", {}).get("output_formats", []) or []
     wants_pptx = "pptx" in formats
     wants_web = any(value in formats for value in ("html", "web", "slidev"))
+    wants_preview = "html-preview" in formats
     wants_pdf = "pdf" in formats
     artifact_routes: list[str] = []
     if wants_pptx and usable("native_pptx_authoring"):
         artifact_routes.append("native-pptx")
     if wants_web and usable("web_slide_authoring"):
         artifact_routes.append("web-slides")
+    if wants_preview and usable("slide_rendering") and (
+        not wants_pptx or usable("native_pptx_authoring")
+    ):
+        artifact_routes.append("pptx-render-preview")
     if wants_pdf and usable("slide_rendering") and artifact_routes:
         artifact_routes.append("pdf-export")
     if not formats:
@@ -174,6 +179,8 @@ def resolve(profile: dict[str, Any], brief: dict[str, Any] | None = None) -> dic
         warnings.append("Requested PPTX cannot be produced natively with verified capabilities.")
     if wants_web and "web-slides" not in artifact_routes:
         warnings.append("Requested web slides cannot be produced with verified capabilities.")
+    if wants_preview and "pptx-render-preview" not in artifact_routes:
+        warnings.append("Requested HTML presenter preview requires final slide renders.")
     if wants_pdf and "pdf-export" not in artifact_routes:
         warnings.append("Requested PDF requires a rendered artifact route or external export.")
     if wants_pptx and not usable("pptx_roundtrip"):

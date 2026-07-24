@@ -1,0 +1,30 @@
+Create a fictional, public-safe, seven-slide English benchmark presentation for PradaSlides.
+
+PURPOSE
+Demonstrate the complete PradaSlides method to builders evaluating the skill: communication brief, narrative architecture, capability-aware routing, media intelligence, stage-quality design, and a clear closing.
+
+AUDIENCE
+Designers, developers, and agent builders deciding whether PradaSlides can produce presentation-ready work rather than generic slide templates.
+
+DELIVERY
+- Fixed 1600 x 900 HTML slides inside the PradaSlides presenter console.
+- Seven slides exactly.
+- Use only the five remote Unsplash sources already used by examples/benchmark-html.
+- No private, client, or user-provided material.
+- No unsupported performance claims.
+
+CONTENT LOCK
+Preserve the existing examples/benchmark-html slide order, audience-facing copy, evidence boundaries, image sources, and speaker-note intent. The benchmark may change composition, typography, color, image framing, diagrams, material language, and visual rhythm, but it must not add, remove, or rewrite substantive content.
+
+QUALITY FLOOR
+- One focal region and a clear reading order on every slide.
+- Stage-readable typography with strong display/body/utility roles.
+- Purposeful topology changes rather than one repeated card grid.
+- Every image has a declared role and a protected crop.
+- Contrast is checked against the rendered background.
+- Decorative elements must clarify hierarchy, sequence, or emphasis.
+- Original composition; do not reproduce a supplied reference layout.
+- Presenter navigation, notes, print mode, and deep links must work.
+
+OUTPUT
+Return only index.html, deck.js, and deck.css plus the minimal benchmark metadata needed for controlled comparison.

@@ -83,7 +83,7 @@ Create a rhythm map before authoring. Use three to six families, for example:
 
 Vary macro composition, tone, density, and image occupation. Repeat furniture, type roles, and material/edge language. Repetition of an entire page shell is allowed only when it is a deliberate series, such as a four-look collection gallery.
 
-## Nenden-class editorial direction as a worked principle
+## Atelier editorial direction as a worked principle
 
 For a fashion/atelier portfolio, an appropriate contract could state:
 

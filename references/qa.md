@@ -63,6 +63,9 @@ Slide-level full-size review:
 - attached-media placement follows the reviewed focal point, safe region, crop tolerance, rights, and sensitivity constraints;
 - browser QA reports no broken/missing-alt/distorted images and no video missing controls, poster/fallback, or accessible labeling;
 - charts/tables communicate the stated claim;
+- source screenshots, products, devices, charts, diagrams, and annotated artifacts retain an equivalent visual teaching job; prose-only substitution is treated as a major issue unless explicitly justified;
+- instructional slides pass the three-second test: the object/system, action/distinction, and reading order are identifiable without narration;
+- repeated screens remain concrete comparison units when channel/state comparison is the lesson; they are not abstracted into visually unrelated bars or cards;
 - sources, footers, and page numbers fit safely;
 - no overlap, clipping, wrapping surprise, orphan, or placeholder;
 - contrast and color encoding are accessible.
