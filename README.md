@@ -2,6 +2,20 @@
 
 PradaSlides is an agent skill for creating audience-ready presentations from a short prompt or source material. It turns a request into a clear communication brief, evidence-aware narrative, product-specific visual direction, editable slide plan, and a verified delivery route for PPTX, HTML slides, PDF, or planning-only work.
 
+## Public HTML benchmark
+
+The [public HTML benchmark](examples/benchmark-html/) is a seven-slide, fictional showcase of the complete method: communication brief, narrative flow, capability-aware routing, deliberate media roles, stage-scale typography, and the interactive presenter console. It uses only external illustrative photography; no user-provided material is included.
+
+![Rendered PradaSlides HTML benchmark: media intelligence slide](assets/benchmark/pradaslides-html-benchmark.png)
+
+To inspect the interactive console locally:
+
+```bash
+python -m http.server 8765 --bind 127.0.0.1
+```
+
+Then open `http://127.0.0.1:8765/examples/benchmark-html/`. The benchmark documents its image sources and usage notes in its [own README](examples/benchmark-html/README.md).
+
 ## What it covers
 
 - portfolios, work/result reviews, proposals, sales and investor decks;
