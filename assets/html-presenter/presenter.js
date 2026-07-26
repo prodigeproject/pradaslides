@@ -60,6 +60,8 @@
     deckTitle: document.getElementById('deck-title'),
     toolbarCounter: document.getElementById('toolbar-counter'),
     stageCounter: document.getElementById('stage-counter'),
+    stageLabel: document.getElementById('stage-label'),
+    stageSection: document.getElementById('stage-section'),
     slideCount: document.getElementById('slide-count'),
     thumbnails: document.getElementById('thumbnail-list'),
     activeSlide: document.getElementById('active-slide'),
@@ -93,6 +95,7 @@
     if (capturePresentation) document.body.classList.add('present-mode');
     if (deck.meta?.previewMode === 'render-parity') document.body.classList.add('render-preview-mode');
     dom.deckTitle.textContent = deck.meta?.title || 'PradaSlides';
+    if (dom.stageLabel) dom.stageLabel.textContent = deck.meta?.stageLabel || deck.meta?.title || 'PradaSlides';
     dom.slideCount.textContent = String(slides.length);
     dom.scaler.style.width = `${stageWidth}px`;
     dom.scaler.style.height = `${stageHeight}px`;
@@ -246,6 +249,7 @@
     const counter = `${pad(state.index + 1)} / ${pad(slides.length)}`;
     dom.stageCounter.textContent = counter;
     dom.toolbarCounter.textContent = `${state.index + 1}/${slides.length}`;
+    if (dom.stageSection) dom.stageSection.textContent = slide.section || slide.role || slide.title || `Slide ${state.index + 1}`;
     dom.previous.disabled = state.index === 0;
     dom.next.disabled = state.index === slides.length - 1;
     dom.slideMeta.textContent = `${slide.id || pad(state.index + 1)} · ${slide.topology || 'custom'} · ${slide.layout || 'unregistered'}`;

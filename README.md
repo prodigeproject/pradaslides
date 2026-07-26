@@ -11,9 +11,13 @@ Native HTML slides, PDF, or planning-only output remain opt-in routes when the u
 
 ## Public HTML benchmark
 
-The [public HTML benchmark](examples/benchmark-html/) is a seven-slide, fictional showcase of the complete method: communication brief, narrative flow, capability-aware routing, deliberate media roles, stage-scale typography, and the interactive presenter console. It uses only external illustrative photography; no user-provided material is included.
+The [tuned V2 HTML benchmark](examples/benchmark-html-tuned/) is a seven-slide, fictional showcase of the complete method: communication brief, narrative flow, capability-aware routing, deliberate media roles, stage-scale typography, and the interactive presenter console. It uses only external illustrative photography; no user-provided material is included.
 
-![Rendered PradaSlides HTML benchmark: media intelligence slide](assets/benchmark/pradaslides-html-benchmark.png)
+![PradaSlides tuned V2 benchmark cover](assets/benchmark/pradaslides-html-benchmark.png)
+
+![PradaSlides tuned V2 media-composition slide](assets/benchmark/pradaslides-tuned-v2-media.png)
+
+![PradaSlides tuned V2 presenter console with the full slide unobstructed](assets/benchmark/pradaslides-tuned-v2-presenter.png)
 
 To inspect the interactive console locally:
 
@@ -21,7 +25,7 @@ To inspect the interactive console locally:
 python -m http.server 8765 --bind 127.0.0.1
 ```
 
-Then open `http://127.0.0.1:8765/examples/benchmark-html/`. The benchmark documents its image sources and usage notes in its [own README](examples/benchmark-html/README.md).
+Then open `http://127.0.0.1:8765/examples/benchmark-html-tuned/`. The benchmark documents its image sources and usage notes in its [own README](examples/benchmark-html-tuned/README.md).
 
 ## What it covers
 

@@ -41,9 +41,6 @@
 
 .bench-eyebrow { color: var(--orange); font: 800 16px/1 var(--mono); letter-spacing: .16em; text-transform: uppercase; }
 .bench-lede { color: var(--muted); font-size: 24px; line-height: 1.42; }
-.bench-footer { position: absolute; z-index: 7; left: 0; bottom: 0; width: 560px; height: 76px; display: flex; align-items: center; gap: 18px; padding: 0 54px; border-radius: 0 34px 0 0; background: rgba(25,27,25,.96); color: #fffaf3; font: 750 12px/1 var(--mono); letter-spacing: .15em; white-space: nowrap; }
-.bench-footer i { flex: 0 0 54px; height: 1px; background: rgba(255,250,243,.38); }
-.bench-footer b { margin-left: auto; font-weight: 800; letter-spacing: .08em; }
 .bench-tag { display: inline-flex; align-items: center; min-height: 34px; padding: 0 15px; border: 1px solid rgba(255,250,243,.44); border-radius: 99px; color: #fffaf3; font: 750 12px/1 var(--mono); letter-spacing: .12em; }
 
 /* 01 — opening: one photo has one job, behind a clear decision. */

@@ -71,28 +71,6 @@
   background: currentColor;
 }
 .bench-lede { color: var(--muted); font-size: 24px; line-height: 1.42; }
-.bench-footer {
-  position: absolute;
-  z-index: 12;
-  left: 58px;
-  right: 58px;
-  bottom: 26px;
-  height: 46px;
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  padding: 0 20px;
-  border: 1px solid rgba(24, 33, 58, .18);
-  border-radius: 99px;
-  background: rgba(255, 253, 247, .92);
-  color: var(--ink);
-  font: 900 11px/1 var(--mono);
-  letter-spacing: .14em;
-  white-space: nowrap;
-  backdrop-filter: blur(12px);
-}
-.bench-footer i { flex: 1 1 auto; height: 1px; background: currentColor; opacity: .23; }
-.bench-footer b { font-weight: 900; color: var(--coral); letter-spacing: .08em; }
 .bench-tag {
   display: inline-flex;
   align-items: center;
@@ -167,13 +145,6 @@
 }
 .cover-proof strong { color: var(--yellow); font: 900 58px/.9 var(--display); }
 .cover-proof span { color: #fffdf7; font-size: 17px; line-height: 1.35; }
-.cover-layout .bench-footer,
-.closing-layout .bench-footer {
-  border-color: rgba(255, 253, 247, .24);
-  background: rgba(13, 22, 42, .9);
-  color: #fffdf7;
-}
-
 /* 02 — evidence window plus three numbered briefing prompts. */
 .brief-layout {
   display: grid;
