@@ -28,6 +28,10 @@ Group the information before decorating it. Contrast must be decisive; weak vari
 ## Grid, flow, and whitespace
 
 - Use consistent outer margins and a small set of column structures.
+- Define `safe_x` and `safe_y` once in the design system. For a 16:9 slide, use at least `3%` of slide width and `4%` of slide height as the default audience-text exclusion zone; increase it for projection, print trim, or branded furniture.
+- Treat the safe area as a measurable boundary. Titles, paragraphs, labels, and captions must remain inside it after real fonts load. Full-bleed images, background color, and intentional decoration may extend beyond it.
+- Use shared grid anchors, CSS Grid/Flexbox, or measured content flow for adjacent regions. Avoid independently guessing absolute `top`, `left`, `width`, and `height` for text blocks whose line count can change.
+- When absolute positioning is justified, reserve the preceding block's rendered height plus an explicit gap. Re-run bounding-box checks after copy, font, viewport, or token changes.
 - Choose reading flow deliberately: left-to-right, top-to-bottom, Z, F, radial, or guided sequence.
 - Use whitespace to reveal grouping and priority.
 - Keep focal elements away from accidental edge tension unless full bleed is intentional.
@@ -51,6 +55,19 @@ These are safety defaults, not targets. Use larger type whenever the room or con
 Use type contrast intentionally across six axes: size, weight, structure, form, direction, and color. Avoid too many type families. Use fonts that exist or can be embedded/licensed; declare fallbacks. Keep line lengths readable and test actual rendering because browser and PowerPoint metrics differ.
 
 Never solve overflow by repeatedly shrinking text. Edit, split, reframe, or move detail to notes/appendix.
+
+### Text geometry contract
+
+For every rendered slide:
+
+- no audience-facing text crosses the declared safe area;
+- no independent text rectangles overlap by more than antialiasing tolerance;
+- no sibling text enters a figure or another protected evidence/layout region;
+- no text box clips, overflows, or leaves the slide;
+- the gap between a title/subtitle region and the next independent region remains visible at the final font metrics;
+- footer/furniture exceptions are explicit and never silently inherited by content.
+
+In HTML, use shared custom properties such as `--safe-x` and `--safe-y`. Figures are protected by default; mark other independently positioned diagrams, charts, process rows, or card groups with `data-no-text-overlap`. Mark only intentional exceptions with `data-edge-safe="ignore"` or `data-text-overlap="allow"`. In PPTX, apply the same coordinates in slide units and verify them from the final render. These exception markers are for deliberate furniture or designed text-on-media interaction, not for silencing a failed layout.
 
 ## Color
 

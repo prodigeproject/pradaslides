@@ -223,7 +223,10 @@ Hard visual rules:
 - Do not ask an image model to render core slide copy, charts, or exact labels.
 - When editable PPTX is requested, rebuild the visual grammar with native text, rules, shapes, annotations, charts, tables, and page furniture. Rasterize only selected photos, texture, approved complex art, or non-reconstructable visual detail; never use a full generated slide as the default editable deck page.
 - Maintain projection-safe type. Default minimums: title `35 pt`, subhead `24 pt`, body `16 pt`; use larger text for live speaking decks.
-- Keep slide-edge safety margins and account for renderer differences.
+- Treat the outer text-safe area as a hard geometry contract, not a visual preference. Unless the design system declares a stricter value, keep audience-facing text at least `3%` of slide width and `4%` of slide height from every edge; full-bleed media and intentional decoration may cross that boundary, but readable copy may not.
+- Anchor independent text and evidence regions to shared grid lines or normal layout flow. Do not position two absolutely placed regions from guessed `top` values when either region can wrap. Measure the rendered boxes after fonts load and require positive separation.
+- Treat figures as protected visual regions: sibling text must not enter their rendered bounds. Mark other independently positioned diagrams, process rows, charts, and card groups with `data-no-text-overlap`; reserve `data-text-overlap="allow"` for deliberate, contrast-checked text-on-media compositions.
+- Keep slide-edge safety margins and account for renderer differences. A slide is not finished until rendered bounding-box QA reports no text-safe-area violation, text collision, clipping, or out-of-bounds content.
 
 ### 7. Produce content and visuals together
 
@@ -286,7 +289,7 @@ When Chromium and Node.js are available, run the portable browser check:
 node scripts/qa_html_presenter.mjs --entry <project-dir>/presenter/index.html --deck-plan <project-dir>/deck-plan.json --count <slide-count> --output <project-dir>/qa/html-presenter.json --render-dir <project-dir>/renders/slides --montage <project-dir>/renders/slide-montage.png --console-shot <project-dir>/renders/console/presenter-console.png
 ```
 
-It checks fixed-stage geometry, presenter-viewport stage fit, plan-to-DOM asset identity, image/video contracts, placeholders, out-of-bounds elements, clipped content, title lines, body text size, suspicious text encoding, thumbnails, console and interactions, deep links, print geometry, draft status, and inspector-toggle geometry. Exhaustive reference coverage additionally activates topology/layout/tone/density diversity and reference-to-DOM trace gates. It does not replace visual review.
+It checks fixed-stage geometry, presenter-viewport stage fit, plan-to-DOM asset identity, image/video contracts, placeholders, out-of-bounds elements, clipped content, outer text-safe-area violations, independent text-block collisions, text entering protected media/layout regions, title lines, body text size, suspicious text encoding, thumbnails, console and interactions, deep links, print geometry, draft status, and inspector-toggle geometry. Exhaustive reference coverage additionally activates topology/layout/tone/density diversity and reference-to-DOM trace gates. It does not replace visual review.
 
 ### 9. Render, inspect, repair
 

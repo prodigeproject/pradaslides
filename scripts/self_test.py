@@ -393,10 +393,13 @@ def main() -> int:
     presenter_runtime = Path(__file__).resolve().parents[1] / "assets" / "html-presenter"
     presenter_css = (presenter_runtime / "presenter.css").read_text(encoding="utf-8")
     presenter_js = (presenter_runtime / "presenter.js").read_text(encoding="utf-8")
+    html_qa = (Path(__file__).resolve().parent / "qa_html_presenter.mjs").read_text(encoding="utf-8")
     if not all(token in presenter_css for token in (".stage-scaler", "position: absolute", "left: 50%", "top: 50%", "translate(-50%, -50%) scale(.05)")):
         failures.append("HTML stage scaler is not explicitly center-positioned")
     if not all(token in presenter_js for token in ("translate(-50%, -50%) scale(${scale})", "ResizeObserver", "viewportObserver.observe(dom.viewport)")):
         failures.append("HTML stage scaler transform can drift beneath console panels")
+    if not all(token in html_qa for token in ("HTML_TEXT_SAFE_AREA", "HTML_TEXT_COLLISION", "HTML_TEXT_OBSTRUCTION", "edgeUnsafe", "textCollisions", "textObstructions")):
+        failures.append("HTML QA omitted hard text-safe-area, collision, or layout-obstruction gates")
     for viewport_width, viewport_height in ((1026, 686), (744, 580), (1336, 724), (1600, 900)):
         scale = min(viewport_width / 1600, viewport_height / 900)
         left = (viewport_width - 1600 * scale) / 2
@@ -682,6 +685,7 @@ def main() -> int:
     print("  - design-system, topology registry, strict visual floor, generation plan, reference benchmark, and corpus coverage accepted")
     print("  - HTML scaffold composition regions and ten topology silhouettes present")
     print("  - centered stage scaler fits representative short and narrow presenter viewports")
+    print("  - hard rendered text-safe-area, collision, and layout-obstruction gates present")
     print("  - invalid brief, provenance, media-review, multi-asset treatment, placeholder, generation-skip, reference-floor, empty/weak/duplicate coverage, and topology cases rejected")
     return 0
 

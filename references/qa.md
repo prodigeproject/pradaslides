@@ -67,6 +67,9 @@ Slide-level full-size review:
 - instructional slides pass the three-second test: the object/system, action/distinction, and reading order are identifiable without narration;
 - repeated screens remain concrete comparison units when channel/state comparison is the lesson; they are not abstracted into visually unrelated bars or cards;
 - sources, footers, and page numbers fit safely;
+- every audience-facing text box remains inside the declared outer safe area after final fonts load;
+- independently positioned text blocks have a visible positive gap; their rendered rectangles do not intersect;
+- sibling text does not enter protected figures, diagrams, charts, process rows, or card groups;
 - no overlap, clipping, wrapping surprise, orphan, or placeholder;
 - contrast and color encoding are accessible.
 
@@ -92,6 +95,7 @@ Use `scripts/inspect_pptx.py` for a structural preflight, then open/render with 
 For web slides:
 
 - fixed-stage layout is stable at supported viewport sizes;
+- rendered text respects the slide-safe area, independent text rectangles do not collide, and text does not obstruct protected media/layout regions;
 - keyboard navigation and focus work;
 - presenter and audience views do not leak private notes;
 - local assets load without network dependencies unless documented;
@@ -125,14 +129,15 @@ For PDF:
 3. Create a labeled montage and review deck rhythm.
 4. Inspect each page at full resolution.
 5. For reference-led work, compare silhouette, focal mass, type-role contrast, material/edge language, image staging, card discipline, slide-family rhythm, native fidelity, and anti-copy integrity against the declared quality floor.
-6. Record issues with slide ID, severity, category, observation, and repair.
-7. Repair the owned authoring source.
+6. Inspect rendered text geometry: edge distance, title/subtitle-to-evidence gap, pairwise text intersections, text-to-protected-region intersections, clipping, and out-of-bounds coordinates.
+7. Record issues with slide ID, severity, category, observation, and repair.
+8. Repair the owned authoring source.
 
 For exhaustive reference-led HTML fixtures, inspect `composition_diversity` in the browser-QA report. It must show meaningful variation in topology, registered layout, tone, density, and combined signatures without long runs of the same macro-composition. Also confirm that every slide's `referenceIds` matches the benchmark coverage mapping; `HTML_REFERENCE_TRACE` indicates a missing, extra, or swapped rendered response. Treat these as anti-regression gates; still inspect whether the variation supports the slide's communication job.
 
 For presenter-console QA, require the transformed 16:9 stage bounding box to remain entirely inside `.stage-viewport`. `HTML_CONSOLE_STAGE_FIT` means the canvas is clipped, distorted, or drifting underneath the rail/inspector despite valid slide-internal geometry.
-8. Re-export and re-render every affected slide; rerender all slides if global tokens changed.
-9. Repeat until all blocking and major issues are closed.
+9. Re-export and re-render every affected slide; rerender all slides if global tokens changed.
+10. Repeat until all blocking and major issues are closed.
 
 Do not accept an issue merely because it is inherited from a template when it makes the delivered deck unusable. Escalate invariant conflicts instead of silently breaking them.
 

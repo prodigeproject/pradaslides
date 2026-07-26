@@ -163,7 +163,7 @@
   font: 900 88px/1 var(--display);
   letter-spacing: -.06em;
 }
-.brief-copy { grid-area: copy; z-index: 2; min-width: 0; padding: 104px 76px 86px 66px; }
+.brief-copy { grid-area: copy; z-index: 2; min-width: 0; padding: 104px 90px 86px 66px; }
 .brief-copy h2 { margin: 25px 0 25px; font-size: 70px; line-height: .9; }
 .brief-copy h2 em { color: var(--blue); font-size: .9em; }
 .brief-copy .bench-lede { max-width: 670px; }
@@ -220,7 +220,7 @@
 }
 .brief-photo img { object-position: 52% 48%; }
 .brief-photo::after { content: ""; position: absolute; inset: 0; background: linear-gradient(0deg, rgba(23,34,59,.8), transparent 45%); }
-.brief-photo figcaption { position: absolute; z-index: 4; left: 28px; right: 28px; bottom: 28px; color: #fffdf7; font-size: 18px; line-height: 1.4; }
+.brief-photo figcaption { position: absolute; z-index: 4; left: 80px; right: 28px; bottom: 76px; color: #fffdf7; font-size: 18px; line-height: 1.4; }
 
 /* 03 — four ideas become a visible sequence instead of a list. */
 .narrative-layout {
@@ -366,7 +366,7 @@
     linear-gradient(transparent 49.9%, rgba(24,33,58,.07) 50%, transparent 50.1%) 0 0 / 58px 58px,
     var(--paper);
 }
-.media-copy { padding: 58px 48px 0 16px; }
+.media-copy { padding: 58px 48px 0 20px; }
 .media-copy h2 { margin: 26px 0 26px; font-size: 76px; line-height: .86; }
 .media-copy h2 em { color: var(--teal); }
 .media-copy p { max-width: 405px; color: var(--muted); font-size: 22px; line-height: 1.45; }
