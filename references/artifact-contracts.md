@@ -1,10 +1,12 @@
 # Artifact contracts
 
-These JSON files form a renderer-neutral intermediate representation. They are living project artifacts, not prose documentation.
+These JSON files are an optional, durable renderer-neutral representation. Use them when the user requests planning artifacts, the work is collaborative or resumable, traceability is high-stakes, or the selected tooling needs file-backed contracts. For ordinary one-shot work, keep the same fields as an internal working model and do not emit the files.
 
-The production chain is:
+The logical production chain always remains:
 
-`brief → source ledger + asset manifest → capability route → design system + layout manifest → deck plan + visual-generation plan → authoring source → previews → QA → exports`
+`brief → source ledger + asset manifest → capability route → design system + layout manifest → deck plan + visual-generation decision → authoring source → previews → QA → exports`
+
+The chain describes reasoning ownership, not mandatory filesystem output. Materializing one contract does not require publishing it to the user.
 
 ## `capability-profile.json` and `execution-plan.json`
 

@@ -34,7 +34,7 @@ Do not equate a multimodal model with a slide runtime. A model may understand an
 
 ## Creative activation rule
 
-Capability detection must change the plan. If image or video generation is usable, read `generative-visuals.md` and resolve `visual-generation-plan.json` before authoring. Do not leave generation as a passive option.
+Capability detection must change the plan. If image or video generation is usable, first honor the user's generation preference, then read `generative-visuals.md` and resolve an internal `use`, `skip`, `unavailable`, or `delegated` decision before authoring. Persist it as `visual-generation-plan.json` only when planning artifacts are enabled. Do not leave generation as a passive option.
 
 - Default to at least one original image candidate when the user requests a polished, distinctive, visual, launch-quality, portfolio-quality, or reference-matched deck and supplied media does not already perform the needed hero/concept job.
 - Generate for a named communication job, slide, topology, crop, and text-safe zone.

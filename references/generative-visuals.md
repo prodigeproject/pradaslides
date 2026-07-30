@@ -2,7 +2,7 @@
 
 ## Principle
 
-Capability awareness must change the work. When image or video generation is available, inspect the deck for a communication job that supplied media, native shapes, charts, or typography cannot perform as effectively. Use the declared material language, edge language, image system, and slide family to make this decision; then record it in `visual-generation-plan.json`.
+Capability awareness must change the work. When image or video generation is available, honor the user's generation preference and inspect the deck for a communication job that supplied media, native shapes, charts, or typography cannot perform as effectively. Use the declared material language, edge language, image system, and slide family to make this decision; keep it internal by default and record it in `visual-generation-plan.json` only when planning artifacts are enabled.
 
 Do not generate imagery merely to prove the capability exists. Do not ignore the capability when a custom visual would materially raise distinctiveness, explanation, emotional entry, or audience recall.
 

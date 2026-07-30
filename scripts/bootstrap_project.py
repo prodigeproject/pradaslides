@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Create a safe PradaSlides project workspace from the starter contracts."""
+"""Create a safe PradaSlides workspace, with optional file-backed contracts."""
 
 from __future__ import annotations
 
@@ -30,9 +30,15 @@ def main() -> int:
     parser.add_argument("--intent", required=True, choices=INTENTS)
     parser.add_argument("--project", help="Human-readable project name")
     parser.add_argument(
+        "--contracts",
+        choices=("none", "full"),
+        default="none",
+        help="Create starter JSON contracts. Default: none (internal planning model only)",
+    )
+    parser.add_argument(
         "--force",
         action="store_true",
-        help="Overwrite only starter JSON files; never deletes other files",
+        help="With --contracts full, overwrite starter JSON files; never delete other files",
     )
     args = parser.parse_args()
 
@@ -47,16 +53,17 @@ def main() -> int:
 
     copied: list[str] = []
     skipped: list[str] = []
-    for source in sorted(starter.glob("*.json")):
-        destination = target / source.name
-        if destination.exists() and not args.force:
-            skipped.append(source.name)
-            continue
-        shutil.copy2(source, destination)
-        copied.append(source.name)
+    if args.contracts == "full":
+        for source in sorted(starter.glob("*.json")):
+            destination = target / source.name
+            if destination.exists() and not args.force:
+                skipped.append(source.name)
+                continue
+            shutil.copy2(source, destination)
+            copied.append(source.name)
 
     brief_path = target / "brief.json"
-    if brief_path.exists() and ("brief.json" in copied or args.force):
+    if args.contracts == "full" and brief_path.exists() and ("brief.json" in copied or args.force):
         brief = json.loads(brief_path.read_text(encoding="utf-8"))
         brief["primary_intent"] = args.intent
         brief["project"] = args.project or target.name
@@ -65,6 +72,7 @@ def main() -> int:
         )
 
     print(f"PradaSlides project ready: {target}")
+    print(f"Planning contracts: {args.contracts}")
     if copied:
         print("Created/updated: " + ", ".join(copied))
     if skipped:

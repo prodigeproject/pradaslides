@@ -1,13 +1,13 @@
 # PradaSlides
 
-PradaSlides is an agent skill for creating audience-ready presentations from a short prompt or source material. It turns a request into a clear communication brief, evidence-aware narrative, product-specific visual direction, editable slide plan, and a verified delivery route.
+PradaSlides is an agent skill for creating audience-ready presentations from a short prompt or source material. It turns a request into a clear communication brief, evidence-aware narrative, product-specific visual direction, editable slide plan, and a verified delivery route—without forcing users to manage planning files.
 
-Its default delivery is deliberately simple:
+When the user does not name a format, PradaSlides recommends:
 
 - an editable `.pptx` as the source of truth; and
 - a presentation-console `.html` preview rendered from that final PPTX.
 
-Native HTML slides, PDF, or planning-only output remain opt-in routes when the user explicitly needs them.
+PPTX only, native HTML slides, Word, PDF, or another requested format are supported routes. Brief, evidence, design-system, and visual-generation logic always run internally; their JSON/Markdown files are optional and generated only when requested or operationally necessary.
 
 ## Public HTML benchmark
 
@@ -47,12 +47,12 @@ For an existing installation, use `--replace`; the installer preserves a backup.
 
 ## Use
 
-Ask the agent to use `$pradaslides`, then provide the presentation goal, audience, source material, required format, and any brand or visual references. The skill will infer sensible defaults when doing so is safe and will preserve user assets.
+Ask the agent to use `$pradaslides`, then provide the presentation goal, audience, source material, preferred format, and any brand or visual references. If visual-generation permission or output format is unresolved, the skill asks one compact preference question and otherwise proceeds with sensible defaults.
 
 To start a standalone project workspace:
 
 ```bash
-python scripts/bootstrap_project.py --output <project-dir> --intent portfolio
+python scripts/bootstrap_project.py --output <project-dir> --intent portfolio --contracts full
 ```
 
 See [SKILL.md](SKILL.md) for the full workflow and [references/](references/) for the focused guidance.

@@ -32,18 +32,23 @@ The scan reports presence, not fitness. Confirm that the selected runtime suppor
 
 ## Routing rules
 
-### Editable PPTX plus render-parity preview by default
+### Adaptive output routing
 
 Use native PPTX when the user expects to edit, reuse, send to ordinary office users, apply masters, or preserve accessibility. Prefer native text, shapes, charts, and tables. Rasterize only visual effects that cannot be represented reliably.
 
 For high-art-direction or reference-matched work, reconstruct the reference grammar rather than flattening each page: native type, rules, masks/shapes where reliable, page furniture, charts, tables, callouts, and exact labels; local raster only for photos, texture, approved art, and non-reconstructable high-fidelity detail. Read `art-direction-and-pptx-reconstruction.md` before selecting this route.
 
-When the user asks for a presentation without naming a format, deliver:
+When format is unresolved, ask once whether the user wants:
 
-1. an editable PPTX as the primary artifact and source of truth;
-2. a dependency-free HTML presenter preview built from the final PPTX slide renders.
+- editable PPTX plus a dependency-free HTML presenter view;
+- PPTX only;
+- fixed-stage HTML only;
+- Word/document output;
+- PDF or another named format.
 
-The preview uses the same final pixels seen in PPTX render QA, so it cannot drift into a second design. It provides thumbnails, navigation, speaker notes, and fullscreen presentation framing. It is intentionally not an editable HTML recreation.
+Recommend PPTX plus HTML presenter for ordinary presentation work. If the user does not answer and progress is safe, use that bundle. The preview uses the same final pixels seen in PPTX render QA, so it cannot drift into a second design. It provides thumbnails, navigation, speaker notes, and fullscreen presentation framing. It is intentionally not an editable HTML recreation.
+
+For HTML-only delivery, author fixed-stage HTML as the source of truth. For Word delivery, rebuild the content as a document-native narrative; do not place slide screenshots into a document and call it a Word output.
 
 ### Existing PPTX
 
@@ -79,9 +84,9 @@ Use only when the user explicitly accepts:
 
 If an editable export is reconstructed through OCR, segmentation, and inpainting, label it as reconstructed and inspect every recovered element.
 
-## Intermediate representation
+## Internal model and optional intermediate representation
 
-Keep a portable contract independent of the renderer:
+Always reason through the following ownership chain, but emit its JSON contracts only when requested or operationally necessary:
 
 `brief.json → source-ledger.json → design-system.json + layout-manifest.json → deck-plan.json + visual-generation-plan.json → authoring source → rendered preview → delivery artifact`
 
@@ -136,7 +141,7 @@ For editable reference-led PPTX, inspect both the montage and individual rendere
 
 ## Delivery bundle
 
-Use clear folders:
+When planning artifacts are enabled, use clear folders:
 
 ```text
 project/
@@ -150,4 +155,4 @@ project/
   exports/
 ```
 
-Keep temporary files outside `exports/`. Supporting QA/source artifacts remain in the project but are not part of the normal user-facing handoff. By default, present only the final `.pptx` and the presenter `index.html`.
+Keep temporary files outside `exports/`. Supporting QA/source artifacts remain in the project but are not part of the normal user-facing handoff. Present only the selected final deliverable(s).

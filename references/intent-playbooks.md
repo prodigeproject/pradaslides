@@ -1,6 +1,6 @@
 # Intent playbooks
 
-Select one primary intent. A secondary intent may alter emphasis, but must not create two competing decks. When the prompt is sparse, infer intent from the requested artifact, sources, audience vocabulary, and desired action; record the inference in `brief.json.assumptions`.
+Select one primary intent. A secondary intent may alter emphasis, but must not create two competing decks. When the prompt is sparse, infer intent from the requested artifact, sources, audience vocabulary, and desired action; keep the inference explicit in the internal assumptions model and persist it in `brief.json.assumptions` when planning artifacts are enabled.
 
 ## Intent selection
 

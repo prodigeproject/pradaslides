@@ -1,6 +1,6 @@
 ---
 name: pradaslides
-description: Create, redesign, critique, or plan audience-ready presentations and PowerPoint decks from a short prompt or source material. Use for portfolios, work/result reviews, proposals, sales decks, investor pitches, strategy or decision decks, research and technical talks, lessons, keynotes, reports, product launches, and reusable presentation templates. Infers user intent, audience, desired change, narrative, evidence needs, visual direction, delivery mode, and the best available slide runtime. By default, produces an editable PPTX as the primary artifact plus a presentation-console HTML preview rendered from the final PPTX, with rigorous content, visual, accessibility, and render QA.
+description: "Create, redesign, critique, or plan audience-ready presentations and PowerPoint decks from a short prompt or source material. Use for portfolios, work/result reviews, proposals, sales decks, investor pitches, strategy or decision decks, research and technical talks, lessons, keynotes, reports, product launches, and reusable presentation templates. Infers user intent, audience, desired change, narrative, evidence needs, visual direction, delivery mode, and the best available slide runtime. Uses an adaptive, low-friction workflow: planning contracts may remain internal, visual generation follows the user's preference, and delivery may be PPTX plus HTML presenter view, PPTX only, HTML only, Word, PDF, or another requested format."
 ---
 
 # PradaSlides
@@ -12,7 +12,7 @@ Turn a minimal request into a presentation with a clear communication job, credi
 - Treat slides as an audience experience, not a decorated document.
 - Optimize for the user's intended change: a decision, belief, action, understanding, trust, or remembered impression.
 - Infer sensible defaults from the material. Ask a question only when the answer would materially change the argument, artifact type, confidentiality, or irreversible work.
-- Keep facts, strategy, design intent, build source, previews, and deliverables in separate owned artifacts.
+- Keep facts, strategy, design intent, build source, previews, and deliverables logically separated. Do not require separate planning files unless the user requests them or the work needs durable auditability.
 - Use the best slide-production capability already available in the host agent. Do not require a Codex-specific tool.
 - Preserve user files. Work in a new project directory unless the user explicitly requests an in-place edit.
 
@@ -20,25 +20,32 @@ Turn a minimal request into a presentation with a clear communication job, credi
 
 1. Classify the task: `new`, `redesign`, `fill-template`, `enhance-existing`, `critique`, or `plan-only`.
 2. Read [intent-playbooks.md](references/intent-playbooks.md) and select one primary intent plus, when useful, one secondary intent.
-3. Create the project contracts from [artifact-contracts.md](references/artifact-contracts.md). For a fresh workspace, run:
+3. Resolve two preferences only when the request has not already answered them:
+
+   - **Visual generation:** may PradaSlides generate original images/video, or must it use supplied, sourced, and native visuals only?
+   - **Delivery:** `PPTX + HTML presenter` (recommended), `PPTX only`, `HTML only`, `Word`, `PDF`, or another named format?
+
+   Ask both in one compact message. Do not turn the start into a questionnaire. If the user does not answer and progress is safe, use no generated media and deliver `PPTX + HTML presenter`. If the request already answers either preference, do not ask it again.
+
+4. Build an internal working model of the communication brief, evidence ledger, design system, capability route, topology route, visual-generation decision, and deck plan. Materialize the JSON contracts from [artifact-contracts.md](references/artifact-contracts.md) only when the user asks for planning artifacts, the project is collaborative or resumable, traceability is high-stakes, or a validator/runtime requires them. For a file-backed workspace, run:
 
    ```bash
-   python scripts/bootstrap_project.py --output <project-dir> --intent <intent>
+   python scripts/bootstrap_project.py --output <project-dir> --intent <intent> --contracts full
    ```
 
-4. Scan the runtime when the host's slide capabilities are not already obvious:
+5. Scan the runtime when the host's slide capabilities are not already obvious:
 
    ```bash
    python scripts/capability_scan.py --json
    ```
 
-5. Read [capability-orchestration.md](references/capability-orchestration.md), declare model/tool/runtime capabilities in `capability-profile.json`, and resolve a conservative execution route:
+6. Read [capability-orchestration.md](references/capability-orchestration.md) and resolve a conservative execution route. Use files when contracts are materialized:
 
    ```bash
    python scripts/resolve_capabilities.py --profile <project-dir>/capability-profile.json --brief <project-dir>/brief.json --scan-local --output <project-dir>/execution-plan.json
    ```
 
-6. Follow the workflow below. Do not start visual slide construction before the brief, source ledger, capability route, design system, topology route, generation decision, and deck plan are coherent.
+7. Follow the workflow below. Do not start visual slide construction before the underlying brief, evidence, capability route, design system, topology route, generation decision, and deck plan are coherent. Coherence is mandatory; emitting their intermediate files is not.
 
 ## Workflow
 
@@ -56,7 +63,7 @@ Resolve or infer:
 - available time, slide-count constraint, aspect ratio, language, brand, and output format;
 - required evidence, source boundaries, confidentiality, and editability.
 
-Record the result in `brief.json`. Validate it:
+Keep the result in working memory by default. If planning artifacts are enabled, record it in `brief.json` and validate it:
 
 ```bash
 python scripts/validate_brief.py <project-dir>/brief.json
@@ -88,9 +95,17 @@ Then choose a production runtime using [runtime-and-delivery.md](references/runt
 5. PDF only when editability is unnecessary;
 6. raster-first PPTX only when the user explicitly accepts limited editability and accessibility.
 
-Unless the user explicitly requests another bundle, set `delivery.output_formats` to `["pptx", "html-preview"]`. The PPTX is the editable source of truth. The HTML is a review and presentation companion, not a second editable layout source.
+Honor the selected delivery route:
 
-If an existing deck must preserve wording, order, or appearance, treat those as invariants and record them in `brief.json`.
+- `PPTX + HTML presenter`: editable PPTX is the source of truth; HTML is a render-parity review and presentation companion.
+- `PPTX only`: deliver the editable deck without a presenter package.
+- `HTML only`: author a fixed-stage web deck with presenter controls; do not imply native PowerPoint editability.
+- `Word`: transform the content into a document-native narrative and use document layout conventions rather than slide canvases.
+- `PDF` or another requested format: use the closest capable runtime and disclose material editability or interaction limits.
+
+If the user gives no preference, use `PPTX + HTML presenter`.
+
+If an existing deck must preserve wording, order, or appearance, treat those as invariants in the working model and persist them when planning artifacts are enabled.
 
 ### 3. Inspect sources and build the evidence ledger
 
@@ -99,12 +114,12 @@ If an existing deck must preserve wording, order, or appearance, treat those as 
 - For PDFs or visually meaningful source files, inspect both extracted content and rendered pages.
 - For attached photos, videos, logos, screenshots, charts, or illustrations, read [media-intelligence.md](references/media-intelligence.md), generate `asset-manifest.json`, and visually inspect every asset or representative video keyframe before locking the outline.
 - If image/video understanding is unavailable, keep semantic review pending and use a human or delegated reviewer. Metadata alone cannot authorize placement. If generation exists without vision, generated media requires external visual approval before final use.
-- Record every claim, metric, quotation, and visual asset in `source-ledger.json` with source location and status.
+- Track every claim, metric, quotation, and visual asset with its source location and status. Persist this as `source-ledger.json` only when planning artifacts are enabled.
 - Mark invented demo values as `scenario`; display that label on-slide when the distinction matters.
 - Research only factual gaps that matter to the communication job. Prefer primary and authoritative sources.
 - Never fabricate citations, metrics, customer claims, testimonials, market sizes, or implementation results.
 
-Validate the ledger before it becomes slide evidence:
+When a ledger file exists, validate it before it becomes slide evidence:
 
 ```bash
 python scripts/validate_source_ledger.py <project-dir>/source-ledger.json
@@ -142,7 +157,7 @@ Avoid artificial drama. A scientific briefing may emphasize orientation and proo
 
 ### 5. Establish the visual system, art direction, and topology registry
 
-Read [design-and-visuals.md](references/design-and-visuals.md), [art-direction-and-pptx-reconstruction.md](references/art-direction-and-pptx-reconstruction.md), and [topology-and-layouts.md](references/topology-and-layouts.md). Edit `design-system.json` and use `layout-manifest.json` as the default portable topology registry.
+Read [design-and-visuals.md](references/design-and-visuals.md), [art-direction-and-pptx-reconstruction.md](references/art-direction-and-pptx-reconstruction.md), and [topology-and-layouts.md](references/topology-and-layouts.md). Establish the design system and topology registry internally. Edit `design-system.json` and use `layout-manifest.json` when planning artifacts are enabled.
 
 Define:
 
@@ -152,7 +167,7 @@ Define:
 - deck-level rhythm: topology variety, focal-mass changes, tone shifts, repetition anchors, and density;
 - reusable topology/layout entries with roles, relationships, slots, media capacity, tone support, guardrails, and target-runtime fidelity.
 
-Validate both contracts:
+Validate both files when they exist:
 
 ```bash
 python scripts/validate_design_system.py <project-dir>/design-system.json
@@ -163,7 +178,7 @@ Select layout by the relationship the audience must perceive, not by decoration 
 
 ### 6. Build the deck plan and visual-generation plan
 
-Create `deck-plan.json`. Each content slide must have:
+Create a deck plan internally; persist it as `deck-plan.json` when planning artifacts are enabled. Each content slide must have:
 
 - one `job` and one `claim`;
 - a takeaway title that communicates the claim;
@@ -184,19 +199,19 @@ Apply these tests:
 - **Why this visual?** The visual performs a communication task.
 - **What should remain?** The audience can repeat the central takeaway after the deck.
 
-Lint before building:
+Lint the persisted plan before building when contract files exist:
 
 ```bash
 python scripts/lint_deck_plan.py <project-dir>/deck-plan.json --brief <project-dir>/brief.json --source-ledger <project-dir>/source-ledger.json --asset-manifest <project-dir>/asset-manifest.json --design-system <project-dir>/design-system.json --layout-manifest <project-dir>/layout-manifest.json --strict-visual
 ```
 
-If image or video generation is usable, read [generative-visuals.md](references/generative-visuals.md) and resolve `visual-generation-plan.json`. Capability awareness must activate an opportunity audit; do not leave generation as an unused checkbox.
+Always make an explicit internal generation decision. If the user declines generation, do not generate media; use supplied, rights-compatible sourced, or native visuals. If the user allows generation and the capability is usable, read [generative-visuals.md](references/generative-visuals.md) and perform an opportunity audit. Persist `visual-generation-plan.json` only when planning artifacts are enabled.
 
 ```bash
 python scripts/validate_visual_generation_plan.py <project-dir>/visual-generation-plan.json --require-resolved
 ```
 
-When generation is available and the user asks for a polished, distinctive, visual, launch-quality, portfolio-quality, or reference-matched deck, default to at least one original candidate unless supplied media already performs every important hero/concept job or generation creates factual/brand risk. Record a concrete reason for `skip`.
+When generation is allowed and available, and the user asks for a polished, distinctive, visual, launch-quality, portfolio-quality, or reference-matched deck, default to at least one original candidate unless supplied media already performs every important hero/concept job or generation creates factual/brand risk. Keep a concrete reason for `skip`.
 
 If the user provides references, infer transferable principles rather than cloning the composition. If direction is genuinely ambiguous and the choice is consequential, present up to three distinct visual routes with short rationale; otherwise select one and proceed.
 
@@ -238,7 +253,7 @@ Hard visual rules:
 - Apply the declared native/raster strategy to every slide. A raster asset may support art direction, but it must not contain the only version of critical copy, chart values, source labels, or accessibility meaning.
 - Use generated or searched imagery only when it adds specific explanatory or emotional value.
 - Honor an explicit preference for sourced photography over generation. Search rights-compatible libraries, select by subject and crop fitness, download the chosen asset locally, record its source page and license, and never depend on a remote hotlink during delivery.
-- For usable generation capability, create only assets approved in `visual-generation-plan.json`, inspect every result, preserve prompt/provenance, and add the selected output to `asset-manifest.json`.
+- For usable and user-approved generation capability, create only assets approved by the resolved generation decision, inspect every result, and preserve prompt/provenance. Add selected outputs to `asset-manifest.json` when planning artifacts are enabled.
 - Give each generated visual a unique slide job. Use one hero once by default; generate a different asset for a different subject, crop, or narrative job.
 - Keep actual logos, people, product UI, data, charts, tables, diagrams, and exact labels sourced or native. Generated art is not factual proof.
 - Reference attached media by stable `asset_ids`; specify placement intent, crop mode, focal anchor, alt text, and fallback behavior in the deck plan.
@@ -249,7 +264,7 @@ Hard visual rules:
 
 ### 8. Build through an owned intermediate representation
 
-Keep `brief.json`, `source-ledger.json`, `deck-plan.json`, and the actual authoring source as the source of truth. Never use rendered PNGs as the editable source.
+Keep the internal planning model and actual authoring source aligned. When contract files are enabled, `brief.json`, `source-ledger.json`, and `deck-plan.json` are durable sources of truth. Never use rendered PNGs as the editable source.
 
 When generating PPTX:
 
@@ -275,7 +290,7 @@ python scripts/scaffold_presenter.py --output <project-dir>/presenter --deck-pla
 
 The scaffold is an authoring start, not a deliverable. Replace each slide's body, clear every `authoring.incomplete` flag, and run visual QA.
 
-When PPTX is the primary artifact, do not duplicate the slide layout in HTML. Render the final PPTX to ordered slide images, then build the presentation-console preview:
+When `PPTX + HTML presenter` is selected, do not duplicate the slide layout in HTML. Render the final PPTX to ordered slide images, then build the presentation-console preview:
 
 ```bash
 python scripts/build_pptx_preview.py --output <project-dir>/presenter --slides-dir <project-dir>/renders/slides --deck-plan <project-dir>/deck-plan.json --title "<deck title>" --force
@@ -332,12 +347,12 @@ Record results in `qa-report.json`. A maximum repair count is a scheduling aid, 
 
 ### 10. Deliver clearly
 
-The default user-facing handoff contains only:
+The user-facing handoff contains only:
 
-- the final editable `.pptx`;
-- the companion presenter `index.html`.
+- the selected primary deliverable;
+- the companion presenter `index.html` when that option was selected.
 
-Keep QA reports, ledgers, manifests, render folders, source files, and benchmark evidence internal unless the user asks for them or a material limitation requires disclosure. Open with the two deliverables and avoid process narration. Add at most one short limitation sentence when necessary.
+Keep QA reports, optional contracts, ledgers, manifests, render folders, source files, and benchmark evidence internal unless the user asks for them or a material limitation requires disclosure. Open with the selected deliverable(s) and avoid process narration. Add at most one short limitation sentence when necessary.
 
 ## Reference router
 
@@ -384,4 +399,5 @@ Keep QA reports, ledgers, manifests, render folders, source files, and benchmark
 - Every slide was rendered and visually inspected.
 - Capability-dependent work was performed only by verified or explicitly delegated capabilities; fallbacks and external review gates are disclosed.
 - The final artifact opens, contains no placeholders, and matches the requested format.
-- The default delivery includes an editable PPTX and a render-parity HTML presenter preview built from that final PPTX; only explicitly requested supporting artifacts are listed to the user.
+- Delivery matches the user's selected route. If no route was provided, the fallback is an editable PPTX plus a render-parity HTML presenter preview built from that final PPTX.
+- Brief, evidence, design-system, topology, and visual-generation logic were completed even when their JSON/Markdown artifacts were not emitted.
